@@ -8,9 +8,10 @@ import {
   searchProducts,
 } from "@/lib/filterProducts";
 import storeData from "@/data/products.json";
+import { Product } from "@/types";
 
 export function useProducts() {
-  const [products] = useState<Product[]>(storeData.products);
+  const [products] = useState<Product[]>(storeData.products as Product[]);
   const [filters, setFilters] = useState<FilterOptions>({
     category: "all",
     priceRange: null,
@@ -51,12 +52,12 @@ export function useProducts() {
 }
 
 export function useProductById(id: string) {
-  const product = storeData.products.find((p) => p.id === id);
+  const product = storeData.products.find((p) => p.id === id) as Product | undefined;
   return product || null;
 }
 
 export function useFeaturedProducts(limit: number = 4) {
-  const featured = storeData.products
+  const featured = (storeData.products as Product[])
     .filter((p) => p.isFeatured)
     .sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0))
     .slice(0, limit);
@@ -69,7 +70,7 @@ export function useSimilarProducts(
   category: string,
   limit: number = 4
 ) {
-  const similar = storeData.products
+  const similar = (storeData.products as Product[])
     .filter((p) => p.id !== productId && p.category === category)
     .sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0))
     .slice(0, limit);

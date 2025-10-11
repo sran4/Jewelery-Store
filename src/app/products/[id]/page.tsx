@@ -7,6 +7,7 @@ import { ImageGallery } from "@/components/product-detail/ImageGallery";
 import { ProductInfo } from "@/components/product-detail/ProductInfo";
 import { SimilarProducts } from "@/components/product-detail/SimilarProducts";
 import storeData from "@/data/products.json";
+import { Product } from "@/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
@@ -20,7 +21,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
-  const product = storeData.products.find((p) => p.id === id);
+  const product = storeData.products.find((p) => p.id === id) as Product | undefined;
 
   if (!product) {
     return {
@@ -48,7 +49,7 @@ export async function generateStaticParams() {
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { id } = await params;
-  const product = storeData.products.find((p) => p.id === id);
+  const product = storeData.products.find((p) => p.id === id) as Product | undefined;
 
   if (!product) {
     notFound();
