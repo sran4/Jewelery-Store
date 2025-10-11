@@ -1,0 +1,317 @@
+{
+  "products": [
+    {
+      "id": "prod_001",
+      "sku": "RNG-GLD-001",
+      "title": "Elegant Diamond Ring",
+      "description": "Exquisite 18K yellow gold ring featuring a brilliant cut diamond centerpiece. Perfect for engagements or special occasions. Crafted with precision and attention to detail.",
+      "price": 2999.99,
+      "discountPrice": 2399.99,
+      "discount": 20,
+      "category": "rings",
+      "material": "18K Gold",
+      "inStock": true,
+      "quantityInStock": 5,
+      "isNew": true,
+      "isFeatured": true,
+      "popularityScore": 95,
+      "images": [
+        "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80",
+        "https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=800&q=80"
+      ],
+      "rating": 4.8,
+      "tags": ["diamond", "luxury", "wedding"]
+    },
+    {
+      "id": "prod_002",
+      "sku": "NKL-SLV-001",
+      "title": "Pearl Necklace",
+      "description": "Classic freshwater pearl necklace with sterling silver clasp. Timeless elegance for any occasion. Each pearl is hand-selected for quality.",
+      "price": 799.99,
+      "category": "necklaces",
+      "material": "Sterling Silver",
+      "inStock": true,
+      "quantityInStock": 12,
+      "isFeatured": true,
+      "popularityScore": 88,
+      "images": [
+        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=800&q=80",
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80"
+      ],
+      "rating": 4.6,
+      "tags": ["pearl", "classic", "elegant"]
+    },
+    {
+      "id": "prod_003",
+      "sku": "BRC-GLD-001",
+      "title": "Gold Charm Bracelet",
+      "description": "Beautiful 14K gold bracelet with customizable charms. Perfect gift for loved ones. Durable and comfortable for everyday wear.",
+      "price": 1499.99,
+      "discountPrice": 449.99,
+      "discount": 70,
+      "category": "bracelets",
+      "material": "14K Gold",
+      "inStock": true,
+      "quantityInStock": 8,
+      "isNew": false,
+      "isFeatured": true,
+      "popularityScore": 92,
+      "images": [
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+        "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80",
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=800&q=80"
+      ],
+      "rating": 4.9,
+      "tags": ["gold", "charm", "gift"]
+    },
+    {
+      "id": "prod_004",
+      "sku": "ERR-DMD-001",
+      "title": "Diamond Stud Earrings",
+      "description": "Brilliant diamond stud earrings set in platinum. Classic design that never goes out of style. Perfect for daily elegance.",
+      "price": 1899.99,
+      "category": "earrings",
+      "material": "Platinum",
+      "inStock": true,
+      "quantityInStock": 15,
+      "isFeatured": true,
+      "popularityScore": 94,
+      "images": [
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+        "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=800&q=80",
+        "https://images.unsplash.com/photo-1629889589091-4d8d4b70f50a?w=800&q=80",
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80"
+      ],
+      "rating": 4.7,
+      "tags": ["diamond", "platinum", "classic"]
+    },
+    {
+      "id": "prod_005",
+      "sku": "RNG-SLV-002",
+      "title": "Sterling Silver Band",
+      "description": "Minimalist sterling silver wedding band. Simple yet sophisticated design perfect for modern couples. Comfortable fit guaranteed.",
+      "price": 299.99,
+      "discountPrice": 209.99,
+      "discount": 30,
+      "category": "rings",
+      "material": "Sterling Silver",
+      "inStock": true,
+      "quantityInStock": 20,
+      "isNew": true,
+      "popularityScore": 85,
+      "images": [
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80",
+        "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
+        "https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=800&q=80",
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80"
+      ],
+      "rating": 4.5,
+      "tags": ["silver", "minimalist", "wedding"]
+    },
+    {
+      "id": "prod_006",
+      "sku": "NKL-GLD-002",
+      "title": "Gold Pendant Necklace",
+      "description": "Delicate 18K gold pendant necklace with heart design. Symbol of love and affection. Perfect for everyday wear.",
+      "price": 899.99,
+      "category": "necklaces",
+      "material": "18K Gold",
+      "inStock": true,
+      "quantityInStock": 10,
+      "isNew": true,
+      "popularityScore": 87,
+      "images": [
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
+        "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=800&q=80",
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80"
+      ],
+      "rating": 4.6,
+      "tags": ["gold", "heart", "love"]
+    },
+    {
+      "id": "prod_007",
+      "sku": "BRC-SLV-002",
+      "title": "Tennis Bracelet",
+      "description": "Stunning cubic zirconia tennis bracelet in sterling silver. Sparkles brilliantly in any light. Professional quality at an affordable price.",
+      "price": 699.99,
+      "discountPrice": 489.99,
+      "discount": 30,
+      "category": "bracelets",
+      "material": "Sterling Silver",
+      "inStock": true,
+      "quantityInStock": 6,
+      "popularityScore": 90,
+      "images": [
+        "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80",
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=800&q=80"
+      ],
+      "rating": 4.8,
+      "tags": ["tennis", "cubic zirconia", "sparkle"]
+    },
+    {
+      "id": "prod_008",
+      "sku": "ERR-GLD-002",
+      "title": "Gold Hoop Earrings",
+      "description": "Classic 14K gold hoop earrings. Versatile design suitable for any outfit. Lightweight and comfortable for all-day wear.",
+      "price": 549.99,
+      "category": "earrings",
+      "material": "14K Gold",
+      "inStock": false,
+      "quantityInStock": 0,
+      "popularityScore": 86,
+      "images": [
+        "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=800&q=80",
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+        "https://images.unsplash.com/photo-1629889589091-4d8d4b70f50a?w=800&q=80",
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80"
+      ],
+      "rating": 4.4,
+      "tags": ["gold", "hoop", "classic"]
+    },
+    {
+      "id": "prod_009",
+      "sku": "RNG-PLT-001",
+      "title": "Sapphire Engagement Ring",
+      "description": "Breathtaking platinum ring with blue sapphire and diamond accents. Royal elegance for your special moment. Certified gemstone.",
+      "price": 3999.99,
+      "discountPrice": 2799.99,
+      "discount": 30,
+      "category": "rings",
+      "material": "Platinum",
+      "inStock": true,
+      "quantityInStock": 3,
+      "isNew": true,
+      "isFeatured": true,
+      "popularityScore": 96,
+      "images": [
+        "https://images.unsplash.com/photo-1612810806695-30f7a8258391?w=800&q=80",
+        "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80"
+      ],
+      "rating": 5.0,
+      "tags": ["sapphire", "engagement", "luxury"]
+    },
+    {
+      "id": "prod_010",
+      "sku": "NKL-DMD-001",
+      "title": "Diamond Pendant Necklace",
+      "description": "Exquisite diamond pendant on 18K white gold chain. Timeless beauty that catches every eye. Investment-grade quality.",
+      "price": 2499.99,
+      "category": "necklaces",
+      "material": "18K White Gold",
+      "inStock": true,
+      "quantityInStock": 7,
+      "isFeatured": true,
+      "popularityScore": 91,
+      "images": [
+        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=800&q=80",
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80"
+      ],
+      "rating": 4.9,
+      "tags": ["diamond", "pendant", "luxury"]
+    },
+    {
+      "id": "prod_011",
+      "sku": "BRC-GLD-003",
+      "title": "Bangle Bracelet Set",
+      "description": "Set of three 14K gold bangles. Wear together or separately for different looks. Smooth finish with comfortable fit.",
+      "price": 1299.99,
+      "discountPrice": 909.99,
+      "discount": 30,
+      "category": "bracelets",
+      "material": "14K Gold",
+      "inStock": true,
+      "quantityInStock": 4,
+      "popularityScore": 84,
+      "images": [
+        "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=800&q=80",
+        "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=800&q=80",
+        "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+        "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80"
+      ],
+      "rating": 4.5,
+      "tags": ["bangle", "set", "gold"]
+    },
+    {
+      "id": "prod_012",
+      "sku": "ERR-PRL-001",
+      "title": "Pearl Drop Earrings",
+      "description": "Elegant freshwater pearl drop earrings in sterling silver. Perfect for formal events and weddings. Hand-matched pearls.",
+      "price": 449.99,
+      "category": "earrings",
+      "material": "Sterling Silver",
+      "inStock": true,
+      "quantityInStock": 11,
+      "isNew": true,
+      "popularityScore": 83,
+      "images": [
+        "https://images.unsplash.com/photo-1629889589091-4d8d4b70f50a?w=800&q=80",
+        "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=800&q=80",
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+        "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800&q=80"
+      ],
+      "rating": 4.6,
+      "tags": ["pearl", "drop", "elegant"]
+    }
+  ],
+  "categories": [
+    {
+      "id": "all",
+      "name": "All Products",
+      "slug": "all",
+      "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+      "description": "Browse our entire collection of fine jewelry"
+    },
+    {
+      "id": "rings",
+      "name": "Rings",
+      "slug": "rings",
+      "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&q=80",
+      "description": "Elegant rings for every occasion"
+    },
+    {
+      "id": "bracelets",
+      "name": "Bracelets",
+      "slug": "bracelets",
+      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=800&q=80",
+      "description": "Beautiful bracelets to adorn your wrist"
+    },
+    {
+      "id": "necklaces",
+      "name": "Necklaces",
+      "slug": "necklaces",
+      "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&q=80",
+      "description": "Stunning necklaces for a perfect look"
+    },
+    {
+      "id": "earrings",
+      "name": "Earrings",
+      "slug": "earrings",
+      "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+      "description": "Exquisite earrings to complete your style"
+    }
+  ],
+  "siteSettings": {
+    "promotionalMessage": "🎉 HUGE SALE! Get up to 70% OFF on selected items - Limited Time Only!",
+    "phone": "+1-234-567-8900",
+    "whatsapp": "+1234567890",
+    "email": "contact@luxuryjewelry.com",
+    "address": "123 Luxury Street, New York, NY 10001",
+    "socialMedia": {
+      "facebook": "https://facebook.com/luxuryjewelry",
+      "instagram": "https://instagram.com/luxuryjewelry",
+      "pinterest": "https://pinterest.com/luxuryjewelry"
+    }
+  }
+}
