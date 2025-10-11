@@ -8,7 +8,6 @@ import {
   searchProducts,
 } from "@/lib/filterProducts";
 import storeData from "@/data/products.json";
-import { Product } from "@/types";
 
 export function useProducts() {
   const [products] = useState<Product[]>(storeData.products as Product[]);
