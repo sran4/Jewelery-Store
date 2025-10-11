@@ -9,13 +9,13 @@ import { ProductFilters } from "@/components/products/ProductFilters";
 import { ProductSort } from "@/components/products/ProductSort";
 import { QuickViewModal } from "@/components/products/QuickViewModal";
 import { useProducts } from "@/hooks/useProducts";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Product } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ProductsPage() {
+function ProductsContent() {
   const {
     products,
     filters,
@@ -134,5 +134,17 @@ export default function ProductsPage() {
       <Footer />
       <FloatingButtons />
     </>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }
