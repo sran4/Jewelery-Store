@@ -1,0 +1,89 @@
+# =================================
+# COPY THIS FILE TO .env.local
+# =================================
+# Instructions: 
+# 1. Copy this entire file
+# 2. Create a new file named ".env.local" in the root directory
+# 3. Paste the contents
+# 4. Fill in your actual values (see SETUP_GUIDES.md for help)
+# 5. Never commit .env.local to git (it's in .gitignore)
+
+# =================================
+# DATABASE
+# =================================
+# MongoDB Atlas - See SETUP_GUIDES.md for setup instructions
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/jewelrystore?retryWrites=true&w=majority
+
+# =================================
+# AUTHENTICATION & SECURITY
+# =================================
+# JWT Secret - Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+JWT_SECRET=your-super-secret-jwt-key-min-32-characters-long
+JWT_EXPIRES_IN=30d
+
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-nextauth-secret-key-min-32-chars
+
+# Initial Admin Credentials (for first-time setup only)
+# After first login, you can change these in the admin panel
+ADMIN_EMAIL=admin@luxuryjewelry.com
+ADMIN_PASSWORD=YourSecure123!Password
+
+# =================================
+# GOOGLE OAUTH (Backup Admin Login)
+# =================================
+# Google Cloud Console - See SETUP_GUIDES.md section 4
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-your-client-secret
+GOOGLE_ADMIN_EMAIL=youradmin@gmail.com
+
+# =================================
+# CLOUDINARY (Image Storage & CDN)
+# =================================
+# Cloudinary Dashboard - See SETUP_GUIDES.md section 2
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CLOUDINARY_UPLOAD_PRESET=jewelry-products
+
+# =================================
+# EMAIL SERVICE (SendGrid)
+# =================================
+# SendGrid Dashboard - See SETUP_GUIDES.md section 3
+SENDGRID_API_KEY=SG.your-sendgrid-api-key
+SENDGRID_FROM_EMAIL=noreply@yourdomain.com
+SENDGRID_FROM_NAME=LuxeJewels
+ADMIN_NOTIFICATION_EMAIL=admin@yourdomain.com
+
+# =================================
+# ANALYTICS & TRACKING
+# =================================
+# Facebook Business Manager - See SETUP_GUIDES.md section 5
+NEXT_PUBLIC_FACEBOOK_PIXEL_ID=123456789012345
+
+# Google Analytics - See SETUP_GUIDES.md section 6
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# =================================
+# SITE CONFIGURATION
+# =================================
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NODE_ENV=development
+
+# =================================
+# RATE LIMITING (Security)
+# =================================
+RATE_LIMIT_LOGIN_ATTEMPTS=5
+RATE_LIMIT_LOGIN_WINDOW=3600
+RATE_LIMIT_CONTACT_SUBMISSIONS=10
+RATE_LIMIT_CONTACT_WINDOW=3600
+RATE_LIMIT_API_CALLS=100
+RATE_LIMIT_API_WINDOW=3600
+
+# =================================
+# OPTIONAL: Web3Forms (Legacy)
+# =================================
+# Keep this if you want to use Web3Forms instead of database
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
+
