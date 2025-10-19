@@ -55,21 +55,22 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/products`);
-    const data = await res.json();
-    if (data.success) {
-      return data.products.map((product: Product) => ({
-        id: product.id,
-      }));
-    }
-  } catch (error) {
-    console.error("Failed to generate static params:", error);
-  }
-  return [];
-}
+// Static generation disabled - products are dynamic
+// export async function generateStaticParams() {
+//   try {
+//     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+//     const res = await fetch(`${baseUrl}/api/products`);
+//     const data = await res.json();
+//     if (data.success) {
+//       return data.products.map((product: Product) => ({
+//         id: product.id,
+//       }));
+//     }
+//   } catch (error) {
+//     console.error("Failed to generate static params:", error);
+//   }
+//   return [];
+// }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { id } = await params;

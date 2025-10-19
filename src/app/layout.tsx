@@ -10,6 +10,9 @@ import { SessionProvider } from "@/components/providers/SessionProvider";
 import { MaintenanceCheck } from "@/components/MaintenanceCheck";
 import { ToastProvider } from "@/components/ui/Toast";
 
+// Force dynamic rendering for all pages
+export const dynamic = 'force-dynamic';
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
