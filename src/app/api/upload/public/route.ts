@@ -55,6 +55,25 @@ export async function POST(request: Request) {
 
     console.log('✅ Cloudinary configured, attempting upload...');
 
+    // Check account usage first
+    try {
+      const usage = await cloudinary.api.usage();
+      console.log('📊 Cloudinary Usage:', {
+        plan: usage.plan,
+        objects: usage.objects,
+        bandwidth: usage.bandwidth,
+        storage: usage.storage,
+        requests: usage.requests,
+        resources: usage.resources,
+        derived_resources: usage.derived_resources,
+        transformations: usage.transformations,
+        video: usage.video,
+        credits: usage.credits,
+      });
+    } catch (usageError: any) {
+      console.log('⚠️ Could not fetch usage stats:', usageError.message);
+    }
+
     // Upload to Cloudinary
     const targetFolder = folder ? `jewelry-store/${folder}` : 'jewelry-store';
     console.log('📁 Uploading to folder:', targetFolder);
