@@ -63,7 +63,7 @@ export default function SettingsPage() {
   });
 
   const [settings, setSettings] = useState<SiteSettings>({
-    siteName: "SherGill Official",
+    siteName: "Shergill Official",
     siteDescription: "Premium jewelry collection",
     contactEmail: "",
     contactPhone: "",
@@ -75,7 +75,7 @@ export default function SettingsPage() {
     },
     promotionalSettings: {
       isActive: true,
-      message: "🎉 Welcome to SherGill Official!",
+      message: "🎉 Welcome to Shergill Official!",
       showTimer: false,
       timerMessage: "🔥 Sale ends in:",
       saleEndDate: "",
@@ -664,7 +664,7 @@ export default function SettingsPage() {
                       e.target.value
                     )
                   }
-                  placeholder="🎉 Welcome to SherGill Official!"
+                  placeholder="🎉 Welcome to Shergill Official!"
                   maxLength={200}
                 />
                 <p className="text-xs text-muted-foreground mt-1">

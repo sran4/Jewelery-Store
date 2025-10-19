@@ -70,7 +70,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-0.5">
                   <Image
                     src="/logo.png"
-                    alt="SherGill Official Logo"
+                    alt="Shergill Official Logo"
                     fill
                     className="object-contain"
                   />
@@ -78,7 +78,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </div>
               <div>
                 <h1 className="font-serif font-bold text-base bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
-                  SherGill Official
+                  Shergill Official
                 </h1>
                 <p className="text-xs text-muted-foreground">Admin Panel</p>
               </div>

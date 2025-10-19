@@ -65,7 +65,7 @@ export default function TermsPage() {
                 </h2>
                 <p className="text-muted-foreground">
                   All content on this website, including text, graphics, logos,
-                  images, and software, is the property of SherGill Official or
+                  images, and software, is the property of Shergill Official or
                   its content suppliers and is protected by intellectual
                   property laws.
                 </p>
@@ -76,7 +76,7 @@ export default function TermsPage() {
                   5. Limitation of Liability
                 </h2>
                 <p className="text-muted-foreground">
-                  To the fullest extent permitted by law, SherGill Official
+                  To the fullest extent permitted by law, Shergill Official
                   shall not be liable for any indirect, incidental, special,
                   consequential, or punitive damages resulting from your use of
                   or inability to use the website.

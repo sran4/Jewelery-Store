@@ -13,7 +13,7 @@ export default function MaintenancePage() {
             <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
               <Image
                 src="/logo.png"
-                alt="SherGill Official Logo"
+                alt="Shergill Official Logo"
                 fill
                 className="object-contain p-1"
               />
@@ -34,7 +34,7 @@ export default function MaintenancePage() {
             We'll Be Right Back!
           </h1>
           <p className="text-xl text-muted-foreground">
-            SherGill Official is currently undergoing scheduled maintenance.
+            Shergill Official is currently undergoing scheduled maintenance.
           </p>
           <p className="text-muted-foreground">
             We're working hard to improve your shopping experience.
@@ -101,7 +101,7 @@ export default function MaintenancePage() {
 
         {/* Footer */}
         <p className="text-xs text-muted-foreground mt-12">
-          © {new Date().getFullYear()} SherGill Official. All rights reserved.
+          © {new Date().getFullYear()} Shergill Official. All rights reserved.
         </p>
       </div>
     </div>

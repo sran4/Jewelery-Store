@@ -81,7 +81,7 @@ function LoginForm() {
                 <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
                   <Image
                     src="/logo.png"
-                    alt="SherGill Official Logo"
+                    alt="Shergill Official Logo"
                     width={96}
                     height={96}
                     className="object-contain"
@@ -98,7 +98,7 @@ function LoginForm() {
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-4xl font-serif font-bold mb-2 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 bg-clip-text text-transparent">
-                SherGill Official
+                Shergill Official
               </h1>
               <h2 className="text-2xl font-semibold text-white mb-2">
                 Admin Portal

@@ -25,7 +25,7 @@ export const INQUIRY_TYPES = [
   "Other",
 ];
 
-export const SITE_NAME = "SherGill Official";
+export const SITE_NAME = "Shergill Official";
 export const SITE_DESCRIPTION =
   "Discover exquisite jewelry pieces including rings, necklaces, bracelets, and earrings. Shop our curated collection of fine jewelry.";
 export const SITE_URL = "https://shergillofficial.com";

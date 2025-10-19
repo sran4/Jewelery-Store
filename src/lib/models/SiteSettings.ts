@@ -41,7 +41,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     siteName: {
       type: String,
       required: true,
-      default: "SherGill Official",
+      default: "Shergill Official",
     },
     siteDescription: {
       type: String,
@@ -107,7 +107,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       },
       message: {
         type: String,
-        default: "🎉 Welcome to SherGill Official!",
+        default: "🎉 Welcome to Shergill Official!",
         maxlength: 200,
       },
       showTimer: {

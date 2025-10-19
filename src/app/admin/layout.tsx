@@ -2,7 +2,7 @@
 // Auth checks moved to individual pages
 
 export const metadata = {
-  title: "Admin Panel | SherGill Official",
+  title: "Admin Panel | Shergill Official",
   description: "Admin dashboard for managing jewelry store",
 };
 

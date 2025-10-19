@@ -17,7 +17,7 @@ export function PromotionalBar() {
   const [promotionalSettings, setPromotionalSettings] =
     useState<PromotionalSettings>({
       isActive: true,
-      message: "🎉 Welcome to SherGill Official!",
+      message: "🎉 Welcome to Shergill Official!",
       showTimer: false,
       timerMessage: "🔥 Sale ends in:",
       saleEndDate: undefined,

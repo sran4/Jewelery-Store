@@ -28,7 +28,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       to: options.to,
       from: {
         email: process.env.SENDGRID_FROM_EMAIL || "noreply@luxuryjewelry.com",
-        name: process.env.SENDGRID_FROM_NAME || "SherGill Official",
+        name: process.env.SENDGRID_FROM_NAME || "Shergill Official",
       },
       subject: options.subject,
       html: options.html,
@@ -123,7 +123,7 @@ export async function sendContactNotification(data: {
           </div>
         </div>
         <div class="footer">
-          <p>This email was sent from your SherGill Official contact form</p>
+          <p>This email was sent from your Shergill Official contact form</p>
           <p>Login to your admin panel to manage inquiries</p>
         </div>
       </div>

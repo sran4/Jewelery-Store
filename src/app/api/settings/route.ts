@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     // If no settings exist, create default ones
     if (!settings) {
       const defaultSettings = {
-        siteName: "SherGill Official",
+        siteName: "Shergill Official",
         siteDescription: "Premium jewelry collection",
         contactEmail: "",
         contactPhone: "",
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
         },
         promotionalSettings: {
           isActive: true,
-          message: "🎉 Welcome to SherGill Official!",
+          message: "🎉 Welcome to Shergill Official!",
           showTimer: false,
           timerMessage: "🔥 Sale ends in:",
           saleEndDate: undefined,
@@ -81,7 +81,7 @@ export async function GET(request: Request) {
       ) {
         settings.promotionalSettings = {
           isActive: true,
-          message: "🎉 Welcome to SherGill Official!",
+          message: "🎉 Welcome to Shergill Official!",
           showTimer: false,
           timerMessage: "🔥 Sale ends in:",
           saleEndDate: undefined,

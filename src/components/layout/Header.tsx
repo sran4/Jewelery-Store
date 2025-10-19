@@ -43,7 +43,7 @@ export function Header() {
               <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
                 <Image
                   src="/logo.png"
-                  alt="SherGill Official Logo"
+                  alt="Shergill Official Logo"
                   fill
                   className="object-contain p-0.5"
                   priority
@@ -51,7 +51,7 @@ export function Header() {
               </div>
             </div>
             <span className="text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent group-hover:from-yellow-400 group-hover:via-amber-400 group-hover:to-yellow-500 group-hover:scale-105 transition-all duration-300 tracking-wide">
-              SherGill Official
+              Shergill Official
             </span>
           </Link>
 

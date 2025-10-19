@@ -69,7 +69,7 @@ export function MaintenanceCheck() {
     return (
       <FancySpinnerOverlay
         size="xl"
-        text="Loading SherGill Official"
+        text="Loading Shergill Official"
         subtext="Preparing your jewelry experience"
       />
     );

@@ -94,14 +94,14 @@ export function Footer() {
                 <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
                   <Image
                     src="/logo.png"
-                    alt="SherGill Official Logo"
+                    alt="Shergill Official Logo"
                     fill
                     className="object-contain p-0.5"
                   />
                 </div>
               </div>
               <span className="text-xl font-serif font-bold bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent tracking-wide group-hover:scale-105 transition-transform duration-300">
-                SherGill Official
+                Shergill Official
               </span>
             </Link>
             <p className="text-muted-foreground text-sm">
@@ -486,7 +486,7 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
-              © {currentYear} SherGill Official. All rights reserved.
+              © {currentYear} Shergill Official. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
               <Link

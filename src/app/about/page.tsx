@@ -60,7 +60,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto mb-20">
             <div className="prose prose-lg dark:prose-invert mx-auto">
               <p className="text-lg leading-relaxed mb-6">
-                Welcome to SherGill Official, where passion meets craftsmanship.
+                Welcome to Shergill Official, where passion meets craftsmanship.
                 Our journey began with a simple belief: that jewelry is more
                 than just an accessory—it's a reflection of your unique story,
                 your milestones, and your most precious moments.
