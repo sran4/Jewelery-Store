@@ -126,7 +126,7 @@ export async function DELETE(
     // Delete images from Cloudinary (only if they have publicIds)
     const publicIds = product.images
       .filter(
-        (img): img is { publicId: string } =>
+        (img): img is { url: string; publicId: string } =>
           typeof img === "object" &&
           img !== null &&
           "publicId" in img &&
