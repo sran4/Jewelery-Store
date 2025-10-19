@@ -19,12 +19,14 @@ interface ProductPageProps {
 
 async function fetchProduct(id: string): Promise<Product | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/products/${id}`, {
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
-    });
-    const data = await res.json();
-    return data.success ? data.product : null;
+    // Direct database access on server-side (no HTTP fetch needed)
+    const connectDB = (await import("@/lib/db/mongodb")).default;
+    const Product = (await import("@/lib/models/Product")).default;
+    
+    await connectDB();
+    const product = await Product.findOne({ id }).lean();
+    
+    return product ? JSON.parse(JSON.stringify(product)) : null;
   } catch (error) {
     console.error("Failed to fetch product:", error);
     return null;
