@@ -112,11 +112,17 @@ export default function CategoriesPage() {
 
         const cloudinaryData = await cloudinaryRes.json();
 
+        console.log('Cloudinary response:', cloudinaryData);
+
         if (cloudinaryData.secure_url) {
           setFormData({ ...formData, image: cloudinaryData.secure_url });
           toast.success("Image uploaded successfully!");
         } else {
-          toast.error("Failed to upload image to Cloudinary");
+          const errorMsg = cloudinaryData.error?.message || 
+                          cloudinaryData.message || 
+                          JSON.stringify(cloudinaryData);
+          console.error('Cloudinary upload failed:', errorMsg);
+          toast.error(`Upload failed: ${errorMsg}`);
         }
       };
       reader.onerror = () => {
