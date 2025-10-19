@@ -68,8 +68,8 @@ export default function AdminContactPage() {
       if (data.success) {
         setSubmissions(data.submissions);
       }
-    } catch (error) {
-      console.error("Failed to fetch submissions:", error);
+    } catch (err) {
+      console.error("Failed to fetch submissions:", err);
     } finally {
       setLoading(false);
     }
@@ -122,8 +122,8 @@ export default function AdminContactPage() {
           });
         }
       }
-    } catch (error) {
-      console.error("Failed to update status:", error);
+    } catch (err) {
+      console.error("Failed to update status:", err);
       error("Failed to update status", "Please try again.");
     } finally {
       setUpdating(false);
@@ -150,8 +150,8 @@ export default function AdminContactPage() {
         }
         success("Submission deleted successfully");
       }
-    } catch (error) {
-      console.error("Failed to delete submission:", error);
+    } catch (err) {
+      console.error("Failed to delete submission:", err);
       error("Failed to delete submission", "Please try again.");
     }
   };
