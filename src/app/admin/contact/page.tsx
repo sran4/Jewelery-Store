@@ -247,28 +247,28 @@ export default function AdminContactPage() {
         {/* Filters */}
         <div className="flex gap-2">
           <Button
-            variant={filter === "all" ? "default" : "outline"}
+            variant={filter === "all" ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilter("all")}
           >
             All ({stats.total})
           </Button>
           <Button
-            variant={filter === "new" ? "default" : "outline"}
+            variant={filter === "new" ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilter("new")}
           >
             New ({stats.new})
           </Button>
           <Button
-            variant={filter === "read" ? "default" : "outline"}
+            variant={filter === "read" ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilter("read")}
           >
             Read ({stats.read})
           </Button>
           <Button
-            variant={filter === "replied" ? "default" : "outline"}
+            variant={filter === "replied" ? "primary" : "outline"}
             size="sm"
             onClick={() => setFilter("replied")}
           >
