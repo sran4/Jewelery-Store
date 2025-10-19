@@ -97,9 +97,16 @@ export default function CategoriesPage() {
             images: [base64], // Send as array with single image
             folder: "categories",
           }),
+          credentials: 'include', // Include session cookies
         });
 
         const data = await res.json();
+
+        if (res.status === 401) {
+          toast.error("Session expired. Please login again.");
+          window.location.href = "/admin/login";
+          return;
+        }
 
         if (data.success) {
           // API returns array of images, we only need the first one
