@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Sparkles, Lock, Shield, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { Suspense } from "react";
+import Image from "next/image";
 
 function LoginForm() {
   const router = useRouter();
@@ -69,17 +70,44 @@ function LoginForm() {
         <div className="glass-effect rounded-3xl p-8 shadow-2xl border border-white/20">
           {/* Logo & Title */}
           <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="p-4 bg-primary/20 rounded-2xl">
-                <Sparkles className="w-12 h-12 text-primary" />
-              </div>
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 0.6, type: "spring" }}
+                className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/30 via-accent/30 to-primary/30 p-1 ring-4 ring-primary/50 shadow-2xl"
+              >
+                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
+                  <Image
+                    src="/logo.png"
+                    alt="SherGill Official Logo"
+                    width={96}
+                    height={96}
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </motion.div>
             </div>
-            <h1 className="text-3xl font-serif font-bold text-white mb-2">
-              Admin Login
-            </h1>
-            <p className="text-blue-200 text-sm">
-              Secure access to your jewelry store
-            </p>
+
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h1 className="text-4xl font-serif font-bold mb-2 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 bg-clip-text text-transparent">
+                SherGill Official
+              </h1>
+              <h2 className="text-2xl font-semibold text-white mb-2">
+                Admin Portal
+              </h2>
+              <p className="text-blue-200 text-sm flex items-center justify-center gap-2">
+                <Shield className="w-4 h-4" />
+                Secure Access
+              </p>
+            </motion.div>
           </div>
 
           {/* Error Message */}
