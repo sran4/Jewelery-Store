@@ -41,18 +41,13 @@ export async function GET() {
 
     // Get usage statistics
     const usage = await cloudinary.api.usage();
-    
-    // Get account details
-    const account = await cloudinary.api.account();
 
     return NextResponse.json({
       success: true,
       message: 'Cloudinary is working!',
       account: {
-        cloud_name: account.cloud_name,
-        plan: account.plan,
-        created_at: account.created_at,
-        updated_at: account.updated_at,
+        cloud_name: cloudName,
+        plan: usage.plan,
       },
       usage: {
         plan: usage.plan,
