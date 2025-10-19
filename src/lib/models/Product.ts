@@ -118,10 +118,11 @@ const ProductSchema = new Schema<IProduct>(
       min: 0,
       default: 0,
     },
-    isNew: {
-      type: Boolean,
-      default: false,
-    },
+    // isNew is a reserved Mongoose property - handled via virtual or computed field
+    // isNew: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     isFeatured: {
       type: Boolean,
       default: false,
@@ -179,11 +180,11 @@ const ProductSchema = new Schema<IProduct>(
 ProductSchema.index({ category: 1 });
 ProductSchema.index({ inStock: 1 });
 ProductSchema.index({ isFeatured: 1 });
-ProductSchema.index({ isNew: 1 });
+// ProductSchema.index({ isNew: 1 }); // isNew is a reserved Mongoose property
 ProductSchema.index({ title: "text", description: "text", tags: "text" });
 
 // Auto-calculate discount percentage before save
-ProductSchema.pre("save", function (next) {
+ProductSchema.pre("save", function (this: any, next) {
   if (this.price && this.discountPrice) {
     this.discount = Math.round(
       ((this.price - this.discountPrice) / this.price) * 100
@@ -193,7 +194,7 @@ ProductSchema.pre("save", function (next) {
 });
 
 // Auto-generate ID if not provided
-ProductSchema.pre("save", function (next) {
+ProductSchema.pre("save", function (this: any, next) {
   console.log("Pre-save hook running, current id:", this.id);
   if (!this.id) {
     this.id = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -203,13 +204,13 @@ ProductSchema.pre("save", function (next) {
 });
 
 // Ensure at least one featured image (only for object arrays)
-ProductSchema.pre("save", function (next) {
+ProductSchema.pre("save", function (this: any, next) {
   if (this.images && this.images.length > 0) {
     // Check if images are objects (not strings)
     if (typeof this.images[0] === "object" && this.images[0] !== null) {
       const hasFeatured = this.images.some((img: any) => img.isFeatured);
       if (!hasFeatured && this.images[0]) {
-        (this.images[0] as any).isFeatured = true;
+        this.images[0].isFeatured = true;
       }
     }
   }

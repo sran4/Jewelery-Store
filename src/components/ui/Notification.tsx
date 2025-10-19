@@ -82,16 +82,22 @@ export function Notification({
   );
 }
 
+// Internal notification type with id
+interface InternalNotification extends NotificationProps {
+  id: string;
+}
+
 // Notification hook for easy usage
 export function useNotification() {
-  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [notifications, setNotifications] = useState<InternalNotification[]>([]);
 
   const addNotification = (
     notification: Omit<NotificationProps, "onClose">
   ) => {
     const id = Date.now().toString();
-    const newNotification: NotificationProps = {
+    const newNotification: InternalNotification = {
       ...notification,
+      id,
       onClose: () => removeNotification(id),
     };
     setNotifications((prev) => [...prev, newNotification]);
