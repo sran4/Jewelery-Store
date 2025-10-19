@@ -61,7 +61,7 @@ export default function CategoriesPage() {
       .replace(/(^-|-$)/g, "");
   };
 
-  // Upload image to Cloudinary
+  // Upload image to Cloudinary (direct client-side upload)
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -87,42 +87,45 @@ export default function CategoriesPage() {
       reader.onload = async () => {
         const base64 = reader.result as string;
 
-        // Upload to Cloudinary via API
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            images: [base64], // Send as array with single image
-            folder: "categories",
-          }),
-          credentials: 'include', // Include session cookies
-        });
-
-        const data = await res.json();
-
-        if (res.status === 401) {
-          toast.error("Session expired. Please login again.");
-          window.location.href = "/admin/login";
+        // Direct upload to Cloudinary (unsigned upload)
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
+        
+        if (!cloudName) {
+          toast.error("Cloudinary not configured. Please check environment variables.");
+          setUploading(false);
           return;
         }
 
-        if (data.success) {
-          // API returns array of images, we only need the first one
-          const uploadedImage = data.images[0];
-          setFormData({ ...formData, image: uploadedImage.url });
+        const formDataUpload = new FormData();
+        formDataUpload.append('file', base64);
+        formDataUpload.append('upload_preset', uploadPreset);
+        formDataUpload.append('folder', 'jewelry-store/categories');
+
+        const cloudinaryRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: 'POST',
+            body: formDataUpload,
+          }
+        );
+
+        const cloudinaryData = await cloudinaryRes.json();
+
+        if (cloudinaryData.secure_url) {
+          setFormData({ ...formData, image: cloudinaryData.secure_url });
           toast.success("Image uploaded successfully!");
         } else {
-          toast.error(data.error || "Failed to upload image");
+          toast.error("Failed to upload image to Cloudinary");
         }
       };
       reader.onerror = () => {
         toast.error("Failed to read file");
+        setUploading(false);
       };
     } catch (error) {
+      console.error('Upload error:', error);
       toast.error("Failed to upload image");
-    } finally {
       setUploading(false);
     }
   };
@@ -538,3 +541,4 @@ export default function CategoriesPage() {
     </AdminLayout>
   );
 }
+

@@ -45,7 +45,9 @@ GOOGLE_ADMIN_EMAIL=youradmin@gmail.com
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
-CLOUDINARY_UPLOAD_PRESET=jewelry-products
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=ml_default
+# Note: Create an unsigned upload preset in Cloudinary Settings → Upload → Add upload preset
+# Set it to "Unsigned" mode and name it (e.g., ml_default or jewelry-products)
 
 # =================================
 # EMAIL SERVICE (SendGrid) - REQUIRED FOR CONTACT FORM
