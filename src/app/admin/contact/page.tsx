@@ -401,7 +401,7 @@ export default function AdminContactPage() {
                 <Button
                   size="sm"
                   variant={
-                    selectedSubmission.status === "new" ? "default" : "outline"
+                    selectedSubmission.status === "new" ? "primary" : "outline"
                   }
                   onClick={() => updateStatus(selectedSubmission._id, "new")}
                   disabled={updating}
@@ -411,7 +411,7 @@ export default function AdminContactPage() {
                 <Button
                   size="sm"
                   variant={
-                    selectedSubmission.status === "read" ? "default" : "outline"
+                    selectedSubmission.status === "read" ? "primary" : "outline"
                   }
                   onClick={() => updateStatus(selectedSubmission._id, "read")}
                   disabled={updating}
@@ -422,7 +422,7 @@ export default function AdminContactPage() {
                   size="sm"
                   variant={
                     selectedSubmission.status === "replied"
-                      ? "default"
+                      ? "primary"
                       : "outline"
                   }
                   onClick={() =>
