@@ -8,7 +8,27 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 export function PopularProducts() {
-  const featuredProducts = useFeaturedProducts(4);
+  const { products: featuredProducts, loading } = useFeaturedProducts(4);
+
+  if (loading) {
+    return (
+      <section className="py-20 container mx-auto px-4">
+        <div className="text-center mb-12">
+          <div className="animate-pulse space-y-4">
+            <div className="h-10 bg-secondary rounded w-1/3 mx-auto"></div>
+            <div className="h-6 bg-secondary rounded w-1/2 mx-auto"></div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="h-64 bg-secondary rounded-lg"></div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 container mx-auto px-4">

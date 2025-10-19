@@ -48,12 +48,15 @@ CLOUDINARY_API_SECRET=your-api-secret
 CLOUDINARY_UPLOAD_PRESET=jewelry-products
 
 # =================================
-# EMAIL SERVICE (SendGrid)
+# EMAIL SERVICE (SendGrid) - REQUIRED FOR CONTACT FORM
 # =================================
-# SendGrid Dashboard - See SETUP_GUIDES.md section 3
+# SendGrid sends YOU email notifications when customers submit the contact form
+# Data is saved in MongoDB database, SendGrid only sends notifications
+# See SETUP_GUIDES.md section 3 for setup instructions
 SENDGRID_API_KEY=SG.your-sendgrid-api-key
 SENDGRID_FROM_EMAIL=noreply@yourdomain.com
-SENDGRID_FROM_NAME=LuxeJewels
+SENDGRID_FROM_NAME=SherGill Official
+# Your email address to receive contact form notifications:
 ADMIN_NOTIFICATION_EMAIL=admin@yourdomain.com
 
 # =================================
@@ -80,10 +83,3 @@ RATE_LIMIT_CONTACT_SUBMISSIONS=10
 RATE_LIMIT_CONTACT_WINDOW=3600
 RATE_LIMIT_API_CALLS=100
 RATE_LIMIT_API_WINDOW=3600
-
-# =================================
-# OPTIONAL: Web3Forms (Legacy)
-# =================================
-# Keep this if you want to use Web3Forms instead of database
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_access_key_here
-

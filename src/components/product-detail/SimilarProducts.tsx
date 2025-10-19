@@ -10,7 +10,26 @@ interface SimilarProductsProps {
 }
 
 export function SimilarProducts({ productId, category }: SimilarProductsProps) {
-  const similarProducts = useSimilarProducts(productId, category, 4);
+  const { products: similarProducts, loading } = useSimilarProducts(
+    productId,
+    category,
+    4
+  );
+
+  if (loading) {
+    return (
+      <section className="py-16">
+        <div className="animate-pulse">
+          <div className="h-10 bg-secondary rounded w-1/3 mx-auto mb-8"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-64 bg-secondary rounded-lg"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (similarProducts.length === 0) {
     return null;

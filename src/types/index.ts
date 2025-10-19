@@ -1,3 +1,11 @@
+export interface ProductImage {
+  url: string;
+  publicId?: string;
+  alt?: string;
+  order?: number;
+  isFeatured?: boolean;
+}
+
 export interface Product {
   id: string;
   sku: string;
@@ -6,14 +14,14 @@ export interface Product {
   price: number;
   discountPrice?: number;
   discount?: number;
-  category: "rings" | "bracelets" | "necklaces" | "earrings";
+  category: string; // Dynamic category slug
   material?: string;
   inStock: boolean;
   quantityInStock: number;
   isNew?: boolean;
   isFeatured?: boolean;
   popularityScore?: number;
-  images: string[];
+  images: (string | ProductImage)[]; // Can be string URLs or image objects
   rating?: number;
   tags?: string[];
 }

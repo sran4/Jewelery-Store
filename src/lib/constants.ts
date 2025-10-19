@@ -25,9 +25,9 @@ export const INQUIRY_TYPES = [
   "Other",
 ];
 
-export const SITE_NAME = "Luxury Jewelry";
+export const SITE_NAME = "SherGill Official";
 export const SITE_DESCRIPTION =
   "Discover exquisite jewelry pieces including rings, necklaces, bracelets, and earrings. Shop our curated collection of fine jewelry.";
-export const SITE_URL = "https://luxuryjewelry.com";
+export const SITE_URL = "https://shergillofficial.com";
 
 export const DEFAULT_OG_IMAGE = "/images/og-image.jpg";

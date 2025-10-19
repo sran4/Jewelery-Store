@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { AdminLayout } from '@/components/admin/AdminLayout';
-import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
-import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import Image from 'next/image';
-import { formatPrice } from '@/lib/utils';
-import toast from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { Plus, Edit, Trash2, Eye, Package, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { formatPrice } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function ProductsListPage() {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      window.location.href = "/admin/login";
+    },
+  });
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
@@ -20,34 +27,34 @@ export default function ProductsListPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/products');
+      const res = await fetch("/api/products");
       const data = await res.json();
       if (data.success) {
         setProducts(data.products);
       }
     } catch (error) {
-      toast.error('Failed to fetch products');
+      toast.error("Failed to fetch products");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (productId: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
       const res = await fetch(`/api/products/${productId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (res.ok) {
-        toast.success('Product deleted successfully');
+        toast.success("Product deleted successfully");
         fetchProducts();
       } else {
-        toast.error('Failed to delete product');
+        toast.error("Failed to delete product");
       }
     } catch (error) {
-      toast.error('An error occurred');
+      toast.error("An error occurred");
     }
   };
 
@@ -139,7 +146,7 @@ export default function ProductsListPage() {
                     <td className="px-4 py-3">
                       <div className="relative w-16 h-16 rounded-lg overflow-hidden">
                         <Image
-                          src={product.images[0]?.url || '/placeholder.png'}
+                          src={product.images[0]?.url || "/placeholder.png"}
                           alt={product.title}
                           fill
                           className="object-cover"
@@ -148,7 +155,9 @@ export default function ProductsListPage() {
                     </td>
                     <td className="px-4 py-3">
                       <p className="font-medium">{product.title}</p>
-                      <p className="text-sm text-muted-foreground">{product.sku}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {product.sku}
+                      </p>
                     </td>
                     <td className="px-4 py-3 capitalize">{product.category}</td>
                     <td className="px-4 py-3">
@@ -165,30 +174,45 @@ export default function ProductsListPage() {
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
                           product.inStock
-                            ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                            : 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                            ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                            : "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400"
                         }`}
                       >
                         {product.inStock
                           ? `${product.quantityInStock} in stock`
-                          : 'Out of stock'}
+                          : "Out of stock"}
                       </span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
-                        <Link href={`/products/${product.id}`} target="_blank">
-                          <button className="p-2 hover:bg-secondary rounded-lg">
+                        <Link href={`/admin/products/${product.id}`}>
+                          <button
+                            className="p-2 hover:bg-secondary rounded-lg"
+                            title="View Details"
+                          >
                             <Eye className="w-4 h-4" />
                           </button>
                         </Link>
+                        <Link href={`/products/${product.id}`} target="_blank">
+                          <button
+                            className="p-2 hover:bg-secondary rounded-lg"
+                            title="View on Site"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </button>
+                        </Link>
                         <Link href={`/admin/products/${product.id}/edit`}>
-                          <button className="p-2 hover:bg-secondary rounded-lg">
+                          <button
+                            className="p-2 hover:bg-secondary rounded-lg"
+                            title="Edit Product"
+                          >
                             <Edit className="w-4 h-4" />
                           </button>
                         </Link>
                         <button
                           onClick={() => handleDelete(product.id)}
                           className="p-2 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg text-red-600"
+                          title="Delete Product"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -204,4 +228,3 @@ export default function ProductsListPage() {
     </AdminLayout>
   );
 }
-

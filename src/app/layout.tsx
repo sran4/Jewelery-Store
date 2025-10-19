@@ -6,6 +6,9 @@ import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { FacebookPixel } from "@/components/analytics/FacebookPixel";
 import { Toaster } from "react-hot-toast";
+import { SessionProvider } from "@/components/providers/SessionProvider";
+import { MaintenanceCheck } from "@/components/MaintenanceCheck";
+import { ToastProvider } from "@/components/ui/Toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -70,25 +73,30 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} font-sans antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: 'hsl(var(--background))',
-                color: 'hsl(var(--foreground))',
-                border: '1px solid hsl(var(--border))',
-              },
-            }}
-          />
-        </ThemeProvider>
+        <SessionProvider>
+          <ToastProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <MaintenanceCheck />
+              {children}
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: "hsl(var(--background))",
+                    color: "hsl(var(--foreground))",
+                    border: "1px solid hsl(var(--border))",
+                  },
+                }}
+              />
+            </ThemeProvider>
+          </ToastProvider>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
-import storeData from "@/data/products.json";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -38,10 +38,20 @@ export function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <Sparkles className="w-8 h-8 text-primary group-hover:rotate-12 transition-transform" />
-            <span className="text-2xl font-serif font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              LuxeJewels
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 p-1 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all duration-300 ring-2 ring-primary/30 group-hover:ring-primary/60">
+              <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
+                <Image
+                  src="/logo.png"
+                  alt="SherGill Official Logo"
+                  fill
+                  className="object-contain p-0.5"
+                  priority
+                />
+              </div>
+            </div>
+            <span className="text-2xl md:text-3xl font-serif font-bold bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent group-hover:from-yellow-400 group-hover:via-amber-400 group-hover:to-yellow-500 group-hover:scale-105 transition-all duration-300 tracking-wide">
+              SherGill Official
             </span>
           </Link>
 

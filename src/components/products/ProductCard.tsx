@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
 import { formatPrice } from "@/lib/utils";
+import { getFirstImageUrl } from "@/lib/imageUtils";
 import { Product } from "@/types";
 import { Eye, Star } from "lucide-react";
 import { motion } from "framer-motion";
@@ -28,7 +29,7 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden bg-secondary/30">
           {/* Image */}
           <Image
-            src={product.images[0]}
+            src={getFirstImageUrl(product.images as any)}
             alt={product.title}
             fill
             className={`object-cover group-hover:scale-110 transition-transform duration-500 ${

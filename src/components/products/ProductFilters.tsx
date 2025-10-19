@@ -1,9 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { FilterOptions } from "@/types";
 import { PRICE_RANGES } from "@/lib/constants";
 import { Select } from "@/components/ui/Select";
-import storeData from "@/data/products.json";
 import { X } from "lucide-react";
 
 interface ProductFiltersProps {
@@ -11,10 +11,38 @@ interface ProductFiltersProps {
   onFiltersChange: (filters: FilterOptions) => void;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export function ProductFilters({
   filters,
   onFiltersChange,
 }: ProductFiltersProps) {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+        if (data.success) {
+          // Add "All Products" option at the beginning
+          setCategories([
+            { _id: "all", name: "All Products", slug: "all" },
+            ...data.categories,
+          ]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+        // Fallback categories
+        setCategories([{ _id: "all", name: "All Products", slug: "all" }]);
+      }
+    }
+    fetchCategories();
+  }, []);
   const handleReset = () => {
     onFiltersChange({
       category: "all",
@@ -56,7 +84,7 @@ export function ProductFilters({
             onChange={(e) =>
               onFiltersChange({ ...filters, category: e.target.value })
             }
-            options={storeData.categories.map((cat) => ({
+            options={categories.map((cat) => ({
               value: cat.slug,
               label: cat.name,
             }))}

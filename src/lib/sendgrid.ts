@@ -1,4 +1,4 @@
-import sgMail from '@sendgrid/mail';
+import sgMail from "@sendgrid/mail";
 
 // Configure SendGrid
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
@@ -19,7 +19,7 @@ export interface EmailOptions {
  */
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
   if (!SENDGRID_API_KEY) {
-    console.warn('SendGrid API key not configured');
+    console.warn("SendGrid API key not configured");
     return false;
   }
 
@@ -27,19 +27,19 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     const msg = {
       to: options.to,
       from: {
-        email: process.env.SENDGRID_FROM_EMAIL || 'noreply@luxuryjewelry.com',
-        name: process.env.SENDGRID_FROM_NAME || 'LuxeJewels',
+        email: process.env.SENDGRID_FROM_EMAIL || "noreply@luxuryjewelry.com",
+        name: process.env.SENDGRID_FROM_NAME || "SherGill Official",
       },
       subject: options.subject,
       html: options.html,
-      text: options.text || options.html.replace(/<[^>]*>/g, ''), // Strip HTML for text version
+      text: options.text || options.html.replace(/<[^>]*>/g, ""), // Strip HTML for text version
     };
 
     await sgMail.send(msg);
-    console.log('✅ Email sent successfully to:', options.to);
+    console.log("✅ Email sent successfully to:", options.to);
     return true;
   } catch (error: any) {
-    console.error('❌ SendGrid Error:', error.response?.body || error);
+    console.error("❌ SendGrid Error:", error.response?.body || error);
     return false;
   }
 }
@@ -57,7 +57,7 @@ export async function sendContactNotification(data: {
   const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
 
   if (!adminEmail) {
-    console.warn('Admin notification email not configured');
+    console.warn("Admin notification email not configured");
     return false;
   }
 
@@ -90,12 +90,16 @@ export async function sendContactNotification(data: {
           
           <div class="field">
             <span class="label">Email:</span>
-            <div class="value"><a href="mailto:${data.email}" style="color: #1e40af;">${data.email}</a></div>
+            <div class="value"><a href="mailto:${
+              data.email
+            }" style="color: #1e40af;">${data.email}</a></div>
           </div>
           
           <div class="field">
             <span class="label">Phone:</span>
-            <div class="value"><a href="tel:${data.phone}" style="color: #1e40af;">${data.phone}</a></div>
+            <div class="value"><a href="tel:${
+              data.phone
+            }" style="color: #1e40af;">${data.phone}</a></div>
           </div>
           
           <div class="field">
@@ -105,17 +109,21 @@ export async function sendContactNotification(data: {
           
           <div class="field">
             <span class="label">Message:</span>
-            <div class="value">${data.message.replace(/\n/g, '<br>')}</div>
+            <div class="value">${data.message.replace(/\n/g, "<br>")}</div>
           </div>
           
           <div style="margin-top: 30px; padding: 15px; background: #dbeafe; border-radius: 5px; border-left: 3px solid #1e40af;">
             <strong>Quick Actions:</strong><br>
-            <a href="mailto:${data.email}" style="color: #1e40af; margin-right: 15px;">Reply via Email</a> |
-            <a href="tel:${data.phone}" style="color: #1e40af; margin-left: 15px;">Call Customer</a>
+            <a href="mailto:${
+              data.email
+            }" style="color: #1e40af; margin-right: 15px;">Reply via Email</a> |
+            <a href="tel:${
+              data.phone
+            }" style="color: #1e40af; margin-left: 15px;">Call Customer</a>
           </div>
         </div>
         <div class="footer">
-          <p>This email was sent from your LuxeJewels contact form</p>
+          <p>This email was sent from your SherGill Official contact form</p>
           <p>Login to your admin panel to manage inquiries</p>
         </div>
       </div>
@@ -131,4 +139,3 @@ export async function sendContactNotification(data: {
 }
 
 export default sgMail;
-

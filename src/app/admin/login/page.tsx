@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Sparkles, Lock, Shield } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Suspense } from 'react';
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Sparkles, Lock, Shield, Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
+import { Suspense } from "react";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/admin';
+  const callbackUrl = searchParams.get("callbackUrl") || "/admin";
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     rememberMe: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
         redirect: false,
@@ -41,7 +42,7 @@ function LoginForm() {
         router.refresh();
       }
     } catch (err: any) {
-      setError('An error occurred during login');
+      setError("An error occurred during login");
     } finally {
       setIsLoading(false);
     }
@@ -50,9 +51,9 @@ function LoginForm() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      await signIn('google', { callbackUrl });
+      await signIn("google", { callbackUrl });
     } catch (err) {
-      setError('Google login failed');
+      setError("Google login failed");
       setIsLoading(false);
     }
   };
@@ -110,18 +111,34 @@ function LoginForm() {
             </div>
 
             <div>
-              <Input
-                label="Password"
-                type="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                placeholder="••••••••"
-                required
-                disabled={isLoading}
-                className="bg-white/10 border-white/20 text-white placeholder:text-blue-200"
-              />
+              <label className="block text-sm font-medium mb-2 text-blue-200">
+                Password
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  placeholder="••••••••"
+                  required
+                  disabled={isLoading}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-blue-200 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-200 hover:text-white transition-colors"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Remember Me */}
@@ -136,7 +153,10 @@ function LoginForm() {
                 className="w-4 h-4 rounded border-white/20"
                 disabled={isLoading}
               />
-              <label htmlFor="rememberMe" className="text-sm text-blue-200 cursor-pointer">
+              <label
+                htmlFor="rememberMe"
+                className="text-sm text-blue-200 cursor-pointer"
+              >
                 Remember me for 30 days
               </label>
             </div>
@@ -218,13 +238,14 @@ function LoginForm() {
 
 export default function AdminLoginPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center animated-gradient">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center animated-gradient">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   );
 }
-

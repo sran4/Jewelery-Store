@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import connectDB from '@/lib/db/mongodb';
-import Product from '@/lib/models/Product';
-import ProductHistory from '@/lib/models/ProductHistory';
-import { productSchema } from '@/lib/validation';
-import { deleteMultipleImages } from '@/lib/cloudinary';
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import connectDB from "@/lib/db/mongodb";
+import Product from "@/lib/models/Product";
+import ProductHistory from "@/lib/models/ProductHistory";
+import { productSchema } from "@/lib/validation";
+import { deleteMultipleImages } from "@/lib/cloudinary";
 
 // GET single product (PUBLIC)
 export async function GET(
@@ -19,10 +19,7 @@ export async function GET(
     const product = await Product.findOne({ id }).lean();
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -30,9 +27,9 @@ export async function GET(
       product,
     });
   } catch (error: any) {
-    console.error('Get Product Error:', error);
+    console.error("Get Product Error:", error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch product' },
+      { error: error.message || "Failed to fetch product" },
       { status: 500 }
     );
   }
@@ -47,10 +44,7 @@ export async function PUT(
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -60,7 +54,7 @@ export async function PUT(
     const validation = productSchema.partial().safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: validation.error.errors },
+        { error: "Invalid input", details: validation.error.errors },
         { status: 400 }
       );
     }
@@ -71,10 +65,7 @@ export async function PUT(
     const existingProduct = await Product.findOne({ id });
 
     if (!existingProduct) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
     // Update product
@@ -94,8 +85,8 @@ export async function PUT(
       version: updatedProduct!.version,
       changes: updatedProduct!.toObject(),
       changedBy: (session.user as any).id,
-      changeType: 'updated',
-      changeDescription: 'Product updated',
+      changeType: "updated",
+      changeDescription: "Product updated",
     });
 
     return NextResponse.json({
@@ -103,9 +94,9 @@ export async function PUT(
       product: updatedProduct,
     });
   } catch (error: any) {
-    console.error('Update Product Error:', error);
+    console.error("Update Product Error:", error);
     return NextResponse.json(
-      { error: error.message || 'Failed to update product' },
+      { error: error.message || "Failed to update product" },
       { status: 500 }
     );
   }
@@ -120,10 +111,7 @@ export async function DELETE(
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -132,16 +120,27 @@ export async function DELETE(
     const product = await Product.findOne({ id });
 
     if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // Delete images from Cloudinary
-    const publicIds = product.images.map((img) => img.publicId).filter(Boolean);
+    // Delete images from Cloudinary (only if they have publicIds)
+    const publicIds = product.images
+      .filter(
+        (img): img is { publicId: string } =>
+          typeof img === "object" &&
+          img !== null &&
+          "publicId" in img &&
+          !!img.publicId
+      )
+      .map((img) => img.publicId);
+
     if (publicIds.length > 0) {
-      await deleteMultipleImages(publicIds);
+      try {
+        await deleteMultipleImages(publicIds);
+      } catch (error) {
+        console.error("Failed to delete images from Cloudinary:", error);
+        // Continue with product deletion even if image deletion fails
+      }
     }
 
     // Create history entry before deletion
@@ -150,8 +149,8 @@ export async function DELETE(
       version: product.version + 1,
       changes: product.toObject(),
       changedBy: (session.user as any).id,
-      changeType: 'deleted',
-      changeDescription: 'Product deleted',
+      changeType: "deleted",
+      changeDescription: "Product deleted",
     });
 
     // Delete product
@@ -159,14 +158,13 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      message: 'Product deleted successfully',
+      message: "Product deleted successfully",
     });
   } catch (error: any) {
-    console.error('Delete Product Error:', error);
+    console.error("Delete Product Error:", error);
     return NextResponse.json(
-      { error: error.message || 'Failed to delete product' },
+      { error: error.message || "Failed to delete product" },
       { status: 500 }
     );
   }
 }
-

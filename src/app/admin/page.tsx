@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { AdminLayout } from '@/components/admin/AdminLayout';
-import { Package, ShoppingBag, Mail, TrendingUp } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
+import { useSession } from "next-auth/react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { Package, ShoppingBag, Mail, TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 interface DashboardStats {
   totalProducts: number;
@@ -15,7 +15,12 @@ interface DashboardStats {
 }
 
 export default function AdminDashboard() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      window.location.href = "/admin/login";
+    },
+  });
   const [stats, setStats] = useState<DashboardStats>({
     totalProducts: 0,
     inStockProducts: 0,
@@ -31,8 +36,8 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const [productsRes, contactRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/contact'),
+        fetch("/api/products"),
+        fetch("/api/contact"),
       ]);
 
       const productsData = await productsRes.json();
@@ -50,12 +55,12 @@ export default function AdminDashboard() {
 
       if (contactData.success) {
         const newCount = contactData.submissions.filter(
-          (s: any) => s.status === 'new'
+          (s: any) => s.status === "new"
         ).length;
         setStats((prev) => ({ ...prev, newSubmissions: newCount }));
       }
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      console.error("Failed to fetch stats:", error);
     } finally {
       setLoading(false);
     }
@@ -63,32 +68,32 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
-      title: 'Total Products',
+      title: "Total Products",
       value: stats.totalProducts,
       icon: Package,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100 dark:bg-blue-900/20',
+      color: "text-blue-600",
+      bgColor: "bg-blue-100 dark:bg-blue-900/20",
     },
     {
-      title: 'In Stock',
+      title: "In Stock",
       value: stats.inStockProducts,
       icon: ShoppingBag,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100 dark:bg-green-900/20',
+      color: "text-green-600",
+      bgColor: "bg-green-100 dark:bg-green-900/20",
     },
     {
-      title: 'Out of Stock',
+      title: "Out of Stock",
       value: stats.outOfStockProducts,
       icon: TrendingUp,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100 dark:bg-orange-900/20',
+      color: "text-orange-600",
+      bgColor: "bg-orange-100 dark:bg-orange-900/20",
     },
     {
-      title: 'New Inquiries',
+      title: "New Inquiries",
       value: stats.newSubmissions,
       icon: Mail,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100 dark:bg-purple-900/20',
+      color: "text-purple-600",
+      bgColor: "bg-purple-100 dark:bg-purple-900/20",
     },
   ];
 
@@ -98,7 +103,7 @@ export default function AdminDashboard() {
         {/* Welcome */}
         <div>
           <h1 className="text-3xl font-serif font-bold mb-2">
-            Welcome back, {session?.user?.name || 'Admin'}!
+            Welcome back, {session?.user?.name || "Admin"}!
           </h1>
           <p className="text-muted-foreground">
             Here's what's happening with your jewelry store today.
@@ -119,9 +124,11 @@ export default function AdminDashboard() {
                     <Icon className={`w-6 h-6 ${stat.color}`} />
                   </div>
                 </div>
-                <p className="text-muted-foreground text-sm mb-1">{stat.title}</p>
+                <p className="text-muted-foreground text-sm mb-1">
+                  {stat.title}
+                </p>
                 <p className="text-3xl font-bold">
-                  {loading ? '...' : stat.value}
+                  {loading ? "..." : stat.value}
                 </p>
               </div>
             );
@@ -156,4 +163,3 @@ export default function AdminDashboard() {
     </AdminLayout>
   );
 }
-

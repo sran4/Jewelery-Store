@@ -1,0 +1,583 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { ImageUploader, UploadedImage } from "@/components/admin/ImageUploader";
+import {
+  Save,
+  ArrowLeft,
+  Package,
+  DollarSign,
+  Tag,
+  Image as ImageIcon,
+  FileText,
+  Settings,
+} from "lucide-react";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { useRouter, useParams } from "next/navigation";
+
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+interface ProductFormData {
+  title: string;
+  description: string;
+  price: number;
+  discountPrice?: number;
+  discount?: number;
+  sku: string;
+  category: string;
+  material?: string;
+  inStock: boolean;
+  quantityInStock: number;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  popularityScore?: number;
+  rating?: number;
+  images: UploadedImage[];
+  tags: string[];
+}
+
+export default function EditProductPage() {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      window.location.href = "/admin/login";
+    },
+  });
+
+  const router = useRouter();
+  const params = useParams();
+  const productId = params.id as string;
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const [formData, setFormData] = useState<ProductFormData>({
+    title: "",
+    description: "",
+    price: 0,
+    discountPrice: 0,
+    discount: 0,
+    sku: "",
+    category: "",
+    material: "",
+    inStock: true,
+    quantityInStock: 0,
+    isNew: false,
+    isFeatured: false,
+    popularityScore: 50,
+    rating: 0,
+    images: [],
+    tags: [],
+  });
+
+  useEffect(() => {
+    fetchCategories();
+    fetchProduct();
+  }, [productId]);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/categories?admin=true");
+      const data = await res.json();
+      if (data.success) {
+        setCategories(data.categories);
+      }
+    } catch (error) {
+      toast.error("Failed to fetch categories");
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`/api/products/${productId}`);
+      const data = await res.json();
+      if (data.success) {
+        const product = data.product;
+        setFormData({
+          title: product.title || "",
+          description: product.description || "",
+          price: product.price || 0,
+          discountPrice: product.discountPrice || 0,
+          discount: product.discount || 0,
+          sku: product.sku || "",
+          category: product.category || "",
+          material: product.material || "",
+          inStock: product.inStock !== false,
+          quantityInStock: product.quantityInStock || 0,
+          isNew: product.isNew || false,
+          isFeatured: product.isFeatured || false,
+          popularityScore: product.popularityScore || 50,
+          rating: product.rating || 0,
+          images:
+            product.images?.map((img: any, index: number) => ({
+              url: img.url || img,
+              publicId: img.publicId || "",
+              order: index,
+              isFeatured: index === 0,
+            })) || [],
+          tags: product.tags || [],
+        });
+      } else {
+        toast.error("Failed to fetch product");
+        router.push("/admin/products");
+      }
+    } catch (error) {
+      toast.error("An error occurred while fetching the product");
+      router.push("/admin/products");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleNumberChange = (field: string, value: string) => {
+    // Allow empty string for number fields
+    const numValue = value === "" ? "" : parseFloat(value) || 0;
+    setFormData((prev) => {
+      const newData = {
+        ...prev,
+        [field]: numValue,
+      };
+
+      // Auto-calculate discount percentage when discount price changes
+      if (field === "discountPrice" && prev.price && numValue) {
+        const discountPercent = Math.round(
+          ((prev.price - numValue) / prev.price) * 100
+        );
+        newData.discount = discountPercent;
+      }
+
+      return newData;
+    });
+  };
+
+  const handleNestedChange = (parent: string, field: string, value: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      [parent]: {
+        ...prev[parent as keyof ProductFormData],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleArrayChange = (field: string, value: string) => {
+    const items = value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    setFormData((prev) => ({
+      ...prev,
+      [field]: items,
+    }));
+  };
+
+  const handleTagsChange = (value: string) => {
+    // Handle tags specifically
+    const tags = value
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+
+    setFormData((prev) => ({
+      ...prev,
+      tags: tags,
+    }));
+  };
+
+  const handleImageUpload = (images: UploadedImage[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: images,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      // Format images for API
+      const formattedImages = formData.images.map((img, index) => ({
+        url: img.url,
+        publicId: img.publicId || "",
+        alt: formData.title,
+        order: index,
+        isFeatured: index === 0, // First image is featured
+      }));
+
+      // Calculate discount percentage if not set
+      const discount =
+        formData.discount ||
+        (formData.discountPrice && formData.price > 0
+          ? Math.round(
+              ((formData.price - formData.discountPrice) / formData.price) * 100
+            )
+          : 0);
+
+      const productData = {
+        ...formData,
+        images: formattedImages,
+        discount,
+        // Ensure number fields are properly formatted
+        price: formData.price || 0,
+        discountPrice: formData.discountPrice || 0,
+        quantityInStock: formData.quantityInStock || 0,
+        rating: formData.rating || 0,
+        popularityScore: formData.popularityScore || 50,
+        discount: formData.discount || 0,
+      };
+
+      const res = await fetch(`/api/products/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Product updated successfully!");
+        router.push("/admin/products");
+      } else {
+        toast.error(data.error || "Failed to update product");
+        console.error("API Error:", data);
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      toast.error("An error occurred while updating the product");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (status === "loading" || loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  return (
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link href="/admin/products">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Products
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-3xl font-serif font-bold">Edit Product</h1>
+              <p className="text-muted-foreground">
+                Update product information
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Basic Information */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <Package className="w-5 h-5" />
+              Basic Information
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium mb-2">
+                  Product Title *
+                </label>
+                <Input
+                  value={formData.title}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                  required
+                  placeholder="Enter product title"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">SKU *</label>
+                <Input
+                  value={formData.sku}
+                  onChange={(e) => handleInputChange("sku", e.target.value)}
+                  required
+                  placeholder="Product SKU"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Category *
+                </label>
+                <Select
+                  value={formData.category}
+                  onChange={(e) =>
+                    handleInputChange("category", e.target.value)
+                  }
+                  required
+                  options={[
+                    { value: "", label: "Select a category" },
+                    ...categories.map((category) => ({
+                      value: category.slug,
+                      label: category.name,
+                    })),
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-2">
+                Description *
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
+                className="w-full px-3 py-2 border border-border rounded-md bg-background h-32"
+                required
+                placeholder="Enter product description"
+              />
+            </div>
+          </div>
+
+          {/* Pricing */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <DollarSign className="w-5 h-5" />
+              Pricing & Inventory
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Price *
+                </label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={(e) =>
+                    handleInputChange("price", parseFloat(e.target.value) || 0)
+                  }
+                  required
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Discount Price
+                </label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={formData.discountPrice || ""}
+                  onChange={(e) =>
+                    handleNumberChange("discountPrice", e.target.value)
+                  }
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Quantity in Stock *
+                </label>
+                <Input
+                  type="number"
+                  value={formData.quantityInStock}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "quantityInStock",
+                      parseInt(e.target.value) || 0
+                    )
+                  }
+                  required
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="inStock"
+                checked={formData.inStock}
+                onChange={(e) => handleInputChange("inStock", e.target.checked)}
+                className="w-4 h-4"
+              />
+              <label htmlFor="inStock" className="text-sm font-medium">
+                Product is in stock
+              </label>
+            </div>
+          </div>
+
+          {/* Product Details */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <Settings className="w-5 h-5" />
+              Product Details
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Material
+                </label>
+                <Input
+                  value={formData.material}
+                  onChange={(e) =>
+                    handleInputChange("material", e.target.value)
+                  }
+                  placeholder="18K Gold"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Tags (comma-separated)
+                </label>
+                <Input
+                  value={formData.tags?.join(", ") || ""}
+                  onChange={(e) => handleTagsChange(e.target.value)}
+                  placeholder="diamond, luxury, wedding"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Rating (0-5)
+                </label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  value={formData.rating || ""}
+                  onChange={(e) => handleNumberChange("rating", e.target.value)}
+                  placeholder="4.8"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Popularity Score (0-100)
+                </label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={formData.popularityScore || ""}
+                  onChange={(e) =>
+                    handleNumberChange("popularityScore", e.target.value)
+                  }
+                  placeholder="50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Discount (%){" "}
+                  {formData.discountPrice && formData.price && (
+                    <span className="text-xs text-muted-foreground">
+                      (auto-calculated)
+                    </span>
+                  )}
+                </label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={formData.discount || ""}
+                  onChange={(e) =>
+                    handleNumberChange("discount", e.target.value)
+                  }
+                  placeholder="20"
+                  readOnly={!!(formData.discountPrice && formData.price)}
+                  className={
+                    formData.discountPrice && formData.price ? "bg-muted" : ""
+                  }
+                />
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="isNew"
+                  checked={formData.isNew}
+                  onChange={(e) => handleInputChange("isNew", e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor="isNew" className="text-sm font-medium">
+                  Mark as New Product
+                </label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="isFeatured"
+                  checked={formData.isFeatured}
+                  onChange={(e) =>
+                    handleInputChange("isFeatured", e.target.checked)
+                  }
+                  className="w-4 h-4"
+                />
+                <label htmlFor="isFeatured" className="text-sm font-medium">
+                  Featured Product
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Images */}
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <ImageIcon className="w-5 h-5" />
+              Product Images
+            </h2>
+            <ImageUploader
+              images={formData.images}
+              onChange={handleImageUpload}
+              maxImages={5}
+            />
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-end gap-4">
+            <Link href="/admin/products">
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </Link>
+            <Button
+              type="submit"
+              disabled={saving}
+              className="flex items-center gap-2"
+            >
+              <Save className="w-4 h-4" />
+              {saving ? "Updating..." : "Update Product"}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </AdminLayout>
+  );
+}

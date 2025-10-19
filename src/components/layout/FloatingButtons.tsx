@@ -1,18 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { Phone, Mail, Gift } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Phone, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { Modal } from "@/components/ui/Modal";
 import { ContactForm } from "@/components/contact/ContactForm";
-import storeData from "@/data/products.json";
 
-const { siteSettings } = storeData;
+interface SiteSettings {
+  phone?: string;
+  whatsapp?: string;
+}
 
 export function FloatingButtons() {
   const { isScrolled } = useScrollPosition();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>({});
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const res = await fetch("/api/settings");
+        const data = await res.json();
+        if (data.success && data.settings) {
+          setSiteSettings(data.settings);
+        }
+      } catch (error) {
+        console.error("Failed to fetch site settings:", error);
+      }
+    }
+    fetchSettings();
+  }, []);
 
   return (
     <>
@@ -53,17 +71,17 @@ export function FloatingButtons() {
               </svg>
             </motion.a>
 
-            {/* Email/Promo Button */}
+            {/* Contact Form Button */}
             <motion.button
               onClick={() => setIsModalOpen(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="w-14 h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center shadow-lg hover:shadow-xl transition-all relative"
               aria-label="Contact form"
-              title="Contact us"
+              title="Send us a message"
               style={{ animationDelay: "1s" }}
             >
-              <Gift className="w-6 h-6" />
+              <MessageSquare className="w-6 h-6" />
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse" />
             </motion.button>
           </motion.div>

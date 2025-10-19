@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PromotionalBar } from "@/components/layout/PromotionalBar";
 import { FloatingButtons } from "@/components/layout/FloatingButtons";
+import { SocialMediaIcons } from "@/components/common/SocialMediaIcons";
 import { Award, Heart, Shield, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -59,10 +60,10 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto mb-20">
             <div className="prose prose-lg dark:prose-invert mx-auto">
               <p className="text-lg leading-relaxed mb-6">
-                Welcome to LuxeJewels, where passion meets craftsmanship. Our
-                journey began with a simple belief: that jewelry is more than
-                just an accessory—it's a reflection of your unique story, your
-                milestones, and your most precious moments.
+                Welcome to SherGill Official, where passion meets craftsmanship.
+                Our journey began with a simple belief: that jewelry is more
+                than just an accessory—it's a reflection of your unique story,
+                your milestones, and your most precious moments.
               </p>
               <p className="text-lg leading-relaxed mb-6">
                 For years, we've been dedicated to sourcing the finest materials
@@ -126,6 +127,20 @@ export default function AboutPage() {
               relationships with every customer who walks through our
               doors—virtual or otherwise.
             </p>
+          </div>
+
+          {/* Social Media Section */}
+          <div className="mt-20 max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+              Connect With Us
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Follow us on social media to stay updated with our latest
+              collections, exclusive offers, and jewelry inspiration.
+            </p>
+            <div className="flex justify-center">
+              <SocialMediaIcons size="lg" showTitle={false} />
+            </div>
           </div>
         </div>
       </main>

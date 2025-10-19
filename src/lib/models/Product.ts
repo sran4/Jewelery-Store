@@ -1,29 +1,29 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IProductImage {
   url: string;
-  publicId: string;
+  publicId?: string;
   alt?: string;
-  order: number;
-  isFeatured: boolean;
+  order?: number;
+  isFeatured?: boolean;
 }
 
 export interface IProduct extends Document {
-  id: string;
+  id?: string;
   sku: string;
   title: string;
   description: string;
   price: number;
   discountPrice?: number;
   discount?: number;
-  category: 'rings' | 'bracelets' | 'necklaces' | 'earrings';
+  category: string; // Dynamic category slug from database
   material?: string;
   inStock: boolean;
   quantityInStock: number;
   isNew?: boolean;
   isFeatured?: boolean;
   popularityScore?: number;
-  images: IProductImage[]; // Flexible 1-5 images
+  images: (string | IProductImage)[]; // Can be string array OR object array
   rating?: number;
   tags?: string[];
   version: number;
@@ -40,14 +40,14 @@ const ProductImageSchema = new Schema<IProductImage>({
   },
   publicId: {
     type: String,
-    required: true,
+    required: false, // Optional - not all images have publicId
   },
   alt: {
     type: String,
   },
   order: {
     type: Number,
-    required: true,
+    required: false,
     default: 0,
   },
   isFeatured: {
@@ -60,7 +60,7 @@ const ProductSchema = new Schema<IProduct>(
   {
     id: {
       type: String,
-      required: true,
+      required: false, // Will be auto-generated
       unique: true,
     },
     sku: {
@@ -88,10 +88,10 @@ const ProductSchema = new Schema<IProduct>(
       type: Number,
       min: 0,
       validate: {
-        validator: function(this: IProduct, value: number) {
+        validator: function (this: IProduct, value: number) {
           return value < this.price;
         },
-        message: 'Discount price must be less than regular price',
+        message: "Discount price must be less than regular price",
       },
     },
     discount: {
@@ -102,7 +102,7 @@ const ProductSchema = new Schema<IProduct>(
     category: {
       type: String,
       required: true,
-      enum: ['rings', 'bracelets', 'necklaces', 'earrings'],
+      // Category slug from database - no enum restriction
     },
     material: {
       type: String,
@@ -133,13 +133,15 @@ const ProductSchema = new Schema<IProduct>(
       default: 50,
     },
     images: {
-      type: [ProductImageSchema],
-      required: true,
+      type: Schema.Types.Mixed, // Accept both string[] and object[]
+      required: false,
+      default: [],
       validate: {
-        validator: function(images: IProductImage[]) {
-          return images.length >= 1 && images.length <= 5;
+        validator: function (images: any) {
+          if (!Array.isArray(images)) return false;
+          return images.length >= 0 && images.length <= 5; // Allow 0-5 images
         },
-        message: 'Product must have between 1 and 5 images',
+        message: "Product must have between 0 and 5 images",
       },
     },
     rating: {
@@ -147,67 +149,74 @@ const ProductSchema = new Schema<IProduct>(
       min: 0,
       max: 5,
     },
-    tags: [{
-      type: String,
-      lowercase: true,
-      trim: true,
-    }],
+    tags: [
+      {
+        type: String,
+        lowercase: true,
+        trim: true,
+      },
+    ],
     version: {
       type: Number,
       default: 1,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Admin',
+      ref: "Admin",
     },
     updatedBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Admin',
+      ref: "Admin",
     },
   },
   {
     timestamps: true,
+    suppressReservedKeysWarning: true,
   }
 );
 
-// Indexes for performance
+// Indexes for performance (sku and id indexes are automatically created by unique: true)
 ProductSchema.index({ category: 1 });
-ProductSchema.index({ sku: 1 });
-ProductSchema.index({ id: 1 });
 ProductSchema.index({ inStock: 1 });
 ProductSchema.index({ isFeatured: 1 });
 ProductSchema.index({ isNew: 1 });
-ProductSchema.index({ title: 'text', description: 'text', tags: 'text' });
+ProductSchema.index({ title: "text", description: "text", tags: "text" });
 
 // Auto-calculate discount percentage before save
-ProductSchema.pre('save', function(next) {
+ProductSchema.pre("save", function (next) {
   if (this.price && this.discountPrice) {
-    this.discount = Math.round(((this.price - this.discountPrice) / this.price) * 100);
+    this.discount = Math.round(
+      ((this.price - this.discountPrice) / this.price) * 100
+    );
   }
   next();
 });
 
 // Auto-generate ID if not provided
-ProductSchema.pre('save', function(next) {
+ProductSchema.pre("save", function (next) {
+  console.log("Pre-save hook running, current id:", this.id);
   if (!this.id) {
     this.id = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.log("Generated new id:", this.id);
   }
   next();
 });
 
-// Ensure at least one featured image
-ProductSchema.pre('save', function(next) {
+// Ensure at least one featured image (only for object arrays)
+ProductSchema.pre("save", function (next) {
   if (this.images && this.images.length > 0) {
-    const hasFeatured = this.images.some(img => img.isFeatured);
-    if (!hasFeatured) {
-      this.images[0].isFeatured = true;
+    // Check if images are objects (not strings)
+    if (typeof this.images[0] === "object" && this.images[0] !== null) {
+      const hasFeatured = this.images.some((img: any) => img.isFeatured);
+      if (!hasFeatured && this.images[0]) {
+        (this.images[0] as any).isFeatured = true;
+      }
     }
   }
   next();
 });
 
 const Product: Model<IProduct> =
-  mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
+  mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
 
 export default Product;
-

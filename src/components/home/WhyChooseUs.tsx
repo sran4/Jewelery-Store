@@ -44,7 +44,8 @@ export function WhyChooseUs() {
             Why Choose Us
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Experience luxury jewelry shopping with confidence and peace of mind
+            Experience premium jewelry shopping with confidence and peace of
+            mind
           </p>
         </motion.div>
 

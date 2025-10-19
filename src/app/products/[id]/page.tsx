@@ -6,7 +6,7 @@ import { Breadcrumb } from "@/components/product-detail/Breadcrumb";
 import { ImageGallery } from "@/components/product-detail/ImageGallery";
 import { ProductInfo } from "@/components/product-detail/ProductInfo";
 import { SimilarProducts } from "@/components/product-detail/SimilarProducts";
-import storeData from "@/data/products.json";
+import { getAllImageUrls } from "@/lib/imageUtils";
 import { Product } from "@/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
@@ -17,11 +17,25 @@ interface ProductPageProps {
   };
 }
 
+async function fetchProduct(id: string): Promise<Product | null> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const res = await fetch(`${baseUrl}/api/products/${id}`, {
+      next: { revalidate: 60 }, // Revalidate every 60 seconds
+    });
+    const data = await res.json();
+    return data.success ? data.product : null;
+  } catch (error) {
+    console.error("Failed to fetch product:", error);
+    return null;
+  }
+}
+
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
-  const product = storeData.products.find((p) => p.id === id) as Product | undefined;
+  const product = await fetchProduct(id);
 
   if (!product) {
     return {
@@ -42,14 +56,24 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  return storeData.products.map((product) => ({
-    id: product.id,
-  }));
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const res = await fetch(`${baseUrl}/api/products`);
+    const data = await res.json();
+    if (data.success) {
+      return data.products.map((product: Product) => ({
+        id: product.id,
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to generate static params:", error);
+  }
+  return [];
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { id } = await params;
-  const product = storeData.products.find((p) => p.id === id) as Product | undefined;
+  const product = await fetchProduct(id);
 
   if (!product) {
     notFound();
@@ -75,7 +99,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
           <div className="grid md:grid-cols-2 gap-12 mb-16">
             <ImageGallery
-              images={product.images}
+              images={getAllImageUrls(product.images as any)}
               productTitle={product.title}
             />
             <ProductInfo product={product} />

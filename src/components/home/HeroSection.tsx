@@ -27,7 +27,7 @@ export function HeroSection() {
           >
             <Sparkles className="w-5 h-5" />
             <span className="text-sm font-medium">
-              Luxury Jewelry Collection
+              Premium Jewelry Collection
             </span>
           </motion.div>
 

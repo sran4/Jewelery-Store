@@ -1,23 +1,23 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import connectDB from '@/lib/db/mongodb';
-import Admin from '@/lib/models/Admin';
-import { rateLimitLogin } from '@/lib/rateLimit';
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import connectDB from "@/lib/db/mongodb";
+import Admin from "@/lib/models/Admin";
+import { rateLimitLogin } from "@/lib/rateLimit";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     // Credentials Provider (Primary Login)
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-        rememberMe: { label: 'Remember Me', type: 'checkbox' },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+        rememberMe: { label: "Remember Me", type: "checkbox" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password are required');
+          throw new Error("Email and password are required");
         }
 
         try {
@@ -39,11 +39,11 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!admin) {
-            throw new Error('Invalid email or password');
+            throw new Error("Invalid email or password");
           }
 
           // Check if account is locked
-          if (admin.isLocked()) {
+          if (admin.isLocked) {
             throw new Error(
               `Account is locked due to too many failed attempts. Try again later or use Google login.`
             );
@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
 
           if (!isPasswordValid) {
             await admin.incLoginAttempts();
-            throw new Error('Invalid email or password');
+            throw new Error("Invalid email or password");
           }
 
           // Reset login attempts on successful login
@@ -72,20 +72,20 @@ export const authOptions: NextAuthOptions = {
             role: admin.role,
           };
         } catch (error: any) {
-          throw new Error(error.message || 'Authentication failed');
+          throw new Error(error.message || "Authentication failed");
         }
       },
     }),
 
     // Google Provider (Backup Login)
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       authorization: {
         params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
         },
       },
     }),
@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       // Google OAuth Sign In
-      if (account?.provider === 'google') {
+      if (account?.provider === "google") {
         const allowedEmail = process.env.GOOGLE_ADMIN_EMAIL?.toLowerCase();
 
         if (!allowedEmail) {
@@ -110,7 +110,9 @@ export const authOptions: NextAuthOptions = {
           await connectDB();
 
           // Find or create admin with Google ID
-          let admin = await Admin.findOne({ googleId: account.providerAccountId });
+          let admin = await Admin.findOne({
+            googleId: account.providerAccountId,
+          });
 
           if (!admin) {
             // Check if admin exists with this email
@@ -126,8 +128,8 @@ export const authOptions: NextAuthOptions = {
               admin = await Admin.create({
                 email: user.email?.toLowerCase(),
                 googleId: account.providerAccountId,
-                name: user.name || 'Admin',
-                role: 'admin',
+                name: user.name || "Admin",
+                role: "admin",
                 lastLogin: new Date(),
               });
             }
@@ -139,7 +141,7 @@ export const authOptions: NextAuthOptions = {
 
           return true;
         } catch (error) {
-          console.error('Google Sign In Error:', error);
+          console.error("Google Sign In Error:", error);
           return false;
         }
       }
@@ -151,7 +153,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.role = (user as any).role || 'admin';
+        token.role = (user as any).role || "admin";
       }
 
       return token;
@@ -168,12 +170,12 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: '/admin/login',
-    error: '/admin/login',
+    signIn: "/admin/login",
+    error: "/admin/login",
   },
 
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
@@ -183,4 +185,3 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-

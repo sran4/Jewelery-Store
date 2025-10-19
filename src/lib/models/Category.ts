@@ -1,16 +1,11 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-
-export interface ICategoryImage {
-  url: string;
-  publicId: string;
-}
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface ICategory extends Document {
   id: string;
   name: string;
   slug: string;
-  image: ICategoryImage;
-  description: string;
+  image?: string; // Optional - simple string URL
+  description?: string; // Optional
   order: number;
   isActive: boolean;
   createdAt: Date;
@@ -21,8 +16,9 @@ const CategorySchema = new Schema<ICategory>(
   {
     id: {
       type: String,
-      required: true,
+      required: false, // Auto-generated if not provided
       unique: true,
+      sparse: true, // Allows multiple null values
     },
     name: {
       type: String,
@@ -37,18 +33,12 @@ const CategorySchema = new Schema<ICategory>(
       trim: true,
     },
     image: {
-      url: {
-        type: String,
-        required: true,
-      },
-      publicId: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: false, // Optional image URL
     },
     description: {
       type: String,
-      required: true,
+      required: false, // Optional description
     },
     order: {
       type: Number,
@@ -64,14 +54,20 @@ const CategorySchema = new Schema<ICategory>(
   }
 );
 
-// Indexes
-CategorySchema.index({ slug: 1 });
+// Indexes (slug index is automatically created by unique: true)
 CategorySchema.index({ order: 1 });
 CategorySchema.index({ isActive: 1 });
 
+// Auto-generate ID if not provided
+CategorySchema.pre("save", function (next) {
+  if (!this.id) {
+    this.id = `cat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+  next();
+});
+
 const Category: Model<ICategory> =
   mongoose.models.Category ||
-  mongoose.model<ICategory>('Category', CategorySchema);
+  mongoose.model<ICategory>("Category", CategorySchema);
 
 export default Category;
-

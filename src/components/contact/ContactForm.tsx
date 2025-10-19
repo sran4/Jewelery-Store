@@ -40,19 +40,17 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
     setStatus("idle");
 
     try {
-      // Web3Forms API endpoint
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // Use your own backend API
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Replace with actual key
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          subject: `${formData.inquiryType} - Jewelry Store Inquiry`,
+          inquiryType: formData.inquiryType,
           message: formData.message,
         }),
       });

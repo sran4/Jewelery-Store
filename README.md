@@ -1,4 +1,4 @@
-# 💎 Luxury Jewelry Store
+# 💎 SherGill Official - Premium Jewelry Store
 
 A modern, SEO-friendly jewelry e-commerce store built with Next.js, React, TypeScript, and Tailwind CSS.
 

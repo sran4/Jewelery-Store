@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose, { Schema, Document, Model } from "mongoose";
+import bcrypt from "bcryptjs";
 
 export interface IAdmin extends Document {
   email: string;
@@ -12,9 +12,9 @@ export interface IAdmin extends Document {
   lockUntil?: Date;
   createdAt: Date;
   updatedAt: Date;
+  isLocked: boolean; // Virtual property
   comparePassword(candidatePassword: string): Promise<boolean>;
   incLoginAttempts(): Promise<this>;
-  isLocked(): boolean;
 }
 
 const AdminSchema = new Schema<IAdmin>(
@@ -27,12 +27,12 @@ const AdminSchema = new Schema<IAdmin>(
       trim: true,
       validate: {
         validator: (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-        message: 'Invalid email format',
+        message: "Invalid email format",
       },
     },
     passwordHash: {
       type: String,
-      required: function(this: IAdmin) {
+      required: function (this: IAdmin) {
         return !this.googleId; // Password required if not using Google OAuth
       },
     },
@@ -47,8 +47,8 @@ const AdminSchema = new Schema<IAdmin>(
     },
     role: {
       type: String,
-      default: 'admin',
-      enum: ['admin', 'super_admin'],
+      default: "admin",
+      enum: ["admin", "super_admin"],
     },
     lastLogin: {
       type: Date,
@@ -66,24 +66,20 @@ const AdminSchema = new Schema<IAdmin>(
   }
 );
 
-// Indexes
-AdminSchema.index({ email: 1 });
-AdminSchema.index({ googleId: 1 });
-
 // Virtual for checking if account is locked
-AdminSchema.virtual('isLocked').get(function(this: IAdmin) {
+AdminSchema.virtual("isLocked").get(function (this: IAdmin) {
   return !!(this.lockUntil && this.lockUntil > new Date());
 });
 
 // Methods
-AdminSchema.methods.comparePassword = async function(
+AdminSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
   if (!this.passwordHash) return false;
   return bcrypt.compare(candidatePassword, this.passwordHash);
 };
 
-AdminSchema.methods.incLoginAttempts = async function(): Promise<IAdmin> {
+AdminSchema.methods.incLoginAttempts = async function (): Promise<IAdmin> {
   // If we have a previous lock that has expired, restart at 1
   if (this.lockUntil && this.lockUntil < new Date()) {
     return this.updateOne({
@@ -96,20 +92,17 @@ AdminSchema.methods.incLoginAttempts = async function(): Promise<IAdmin> {
   const updates: any = { $inc: { loginAttempts: 1 } };
 
   // Lock account after 5 failed attempts for 1 hour
-  const maxAttempts = parseInt(process.env.RATE_LIMIT_LOGIN_ATTEMPTS || '5');
-  if (this.loginAttempts + 1 >= maxAttempts && !this.isLocked) {
+  const maxAttempts = parseInt(process.env.RATE_LIMIT_LOGIN_ATTEMPTS || "5");
+  const isCurrentlyLocked = !!(this.lockUntil && this.lockUntil > new Date());
+  if (this.loginAttempts + 1 >= maxAttempts && !isCurrentlyLocked) {
     updates.$set = { lockUntil: new Date(Date.now() + 3600000) }; // 1 hour
   }
 
   return this.updateOne(updates);
 };
 
-AdminSchema.methods.isLocked = function(): boolean {
-  return !!(this.lockUntil && this.lockUntil > new Date());
-};
-
 // Static method to create admin
-AdminSchema.statics.createAdmin = async function(
+AdminSchema.statics.createAdmin = async function (
   email: string,
   password: string,
   name: string
@@ -121,13 +114,12 @@ AdminSchema.statics.createAdmin = async function(
     email: email.toLowerCase(),
     passwordHash,
     name,
-    role: 'admin',
+    role: "admin",
   });
 };
 
 // Prevent model recompilation in development
 const Admin: Model<IAdmin> =
-  mongoose.models.Admin || mongoose.model<IAdmin>('Admin', AdminSchema);
+  mongoose.models.Admin || mongoose.model<IAdmin>("Admin", AdminSchema);
 
 export default Admin;
-

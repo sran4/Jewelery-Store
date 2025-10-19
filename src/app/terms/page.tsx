@@ -65,9 +65,9 @@ export default function TermsPage() {
                 </h2>
                 <p className="text-muted-foreground">
                   All content on this website, including text, graphics, logos,
-                  images, and software, is the property of LuxeJewels or its
-                  content suppliers and is protected by intellectual property
-                  laws.
+                  images, and software, is the property of SherGill Official or
+                  its content suppliers and is protected by intellectual
+                  property laws.
                 </p>
               </section>
 
@@ -76,8 +76,8 @@ export default function TermsPage() {
                   5. Limitation of Liability
                 </h2>
                 <p className="text-muted-foreground">
-                  To the fullest extent permitted by law, LuxeJewels shall not
-                  be liable for any indirect, incidental, special,
+                  To the fullest extent permitted by law, SherGill Official
+                  shall not be liable for any indirect, incidental, special,
                   consequential, or punitive damages resulting from your use of
                   or inability to use the website.
                 </p>

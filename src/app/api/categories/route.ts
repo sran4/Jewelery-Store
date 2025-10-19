@@ -1,17 +1,30 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import connectDB from '@/lib/db/mongodb';
-import Category from '@/lib/models/Category';
-import { categorySchema } from '@/lib/validation';
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import connectDB from "@/lib/db/mongodb";
+import Category from "@/lib/models/Category";
+import { categorySchema } from "@/lib/validation";
 
-// GET all categories (PUBLIC)
-export async function GET() {
+// GET all categories (PUBLIC - active only, ADMIN - all)
+export async function GET(request: Request) {
   try {
     await connectDB();
 
-    const categories = await Category.find({ isActive: true })
-      .sort({ order: 1 })
+    const { searchParams } = new URL(request.url);
+    const admin = searchParams.get("admin") === "true";
+
+    // Check if this is an admin request
+    let isAdmin = false;
+    if (admin) {
+      const session = await getServerSession(authOptions);
+      isAdmin = !!(session && session.user);
+    }
+
+    // If admin, return all categories; otherwise only active ones
+    const filter = isAdmin ? {} : { isActive: true };
+
+    const categories = await Category.find(filter)
+      .sort({ order: 1, createdAt: -1 })
       .lean();
 
     return NextResponse.json({
@@ -20,7 +33,7 @@ export async function GET() {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch categories' },
+      { error: error.message || "Failed to fetch categories" },
       { status: 500 }
     );
   }
@@ -32,10 +45,7 @@ export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await request.json();
@@ -43,7 +53,7 @@ export async function POST(request: Request) {
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: validation.error.errors },
+        { error: "Invalid input", details: validation.error.errors },
         { status: 400 }
       );
     }
@@ -61,9 +71,8 @@ export async function POST(request: Request) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { error: error.message || 'Failed to create category' },
+      { error: error.message || "Failed to create category" },
       { status: 500 }
     );
   }
 }
-

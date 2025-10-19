@@ -1,12 +1,40 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { Upload, X, Star, Image as ImageIcon } from 'lucide-react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
-import { validateImageFile, fileToBase64 } from '@/lib/cloudinary';
-import toast from 'react-hot-toast';
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { Upload, X, Star, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
+import { Button } from "@/components/ui/Button";
+// Removed cloudinary import to fix client-side module issue
+import toast from "react-hot-toast";
+
+// Client-side validation and file conversion functions
+const validateImageFile = (file: File) => {
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    return {
+      valid: false,
+      error: "Invalid file type. Only JPEG, PNG, and WebP are allowed.",
+    };
+  }
+
+  if (file.size > maxSize) {
+    return { valid: false, error: "File size too large. Maximum 5MB allowed." };
+  }
+
+  return { valid: true };
+};
+
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
 
 export interface UploadedImage {
   url: string;
@@ -24,11 +52,11 @@ interface ImageUploaderProps {
   onUpload?: (files: File[]) => Promise<UploadedImage[]>;
 }
 
-export function ImageUploader({ 
-  images, 
-  onChange, 
+export function ImageUploader({
+  images,
+  onChange,
   maxImages = 5,
-  onUpload 
+  onUpload,
 }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
 
@@ -68,7 +96,7 @@ export function ImageUploader({
               const preview = await fileToBase64(file);
               return {
                 url: preview,
-                publicId: '',
+                publicId: "",
                 order: images.length + index,
                 isFeatured: images.length === 0 && index === 0,
                 file,
@@ -79,7 +107,7 @@ export function ImageUploader({
           onChange([...images, ...newImages]);
         }
       } catch (error: any) {
-        toast.error(error.message || 'Failed to process images');
+        toast.error(error.message || "Failed to process images");
       } finally {
         setIsUploading(false);
       }
@@ -90,9 +118,9 @@ export function ImageUploader({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/jpeg': ['.jpg', '.jpeg'],
-      'image/png': ['.png'],
-      'image/webp': ['.webp'],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+      "image/webp": [".webp"],
     },
     maxFiles: maxImages - images.length,
     disabled: isUploading || images.length >= maxImages,
@@ -121,13 +149,13 @@ export function ImageUploader({
     const newImages = [...images];
     const [removed] = newImages.splice(fromIndex, 1);
     newImages.splice(toIndex, 0, removed);
-    
+
     // Re-index
     const reindexed = newImages.map((img, i) => ({
       ...img,
       order: i,
     }));
-    
+
     onChange(reindexed);
   };
 
@@ -140,12 +168,25 @@ export function ImageUploader({
           Image Upload Guidelines:
         </p>
         <ul className="space-y-1 text-muted-foreground">
-          <li>• <strong>Format:</strong> JPEG, PNG, or WebP</li>
-          <li>• <strong>Maximum Size:</strong> 5MB per image</li>
-          <li>• <strong>Recommended Dimensions:</strong> 2000×2000 pixels (min 1200×1200)</li>
-          <li>• <strong>Aspect Ratio:</strong> 1:1 (Square)</li>
-          <li>• <strong>Quantity:</strong> 1-5 images per product</li>
-          <li>• <strong>Note:</strong> First image will be the featured/main image</li>
+          <li>
+            • <strong>Format:</strong> JPEG, PNG, or WebP
+          </li>
+          <li>
+            • <strong>Maximum Size:</strong> 5MB per image
+          </li>
+          <li>
+            • <strong>Recommended Dimensions:</strong> 2000×2000 pixels (min
+            1200×1200)
+          </li>
+          <li>
+            • <strong>Aspect Ratio:</strong> 1:1 (Square)
+          </li>
+          <li>
+            • <strong>Quantity:</strong> 1-5 images per product
+          </li>
+          <li>
+            • <strong>Note:</strong> First image will be the featured/main image
+          </li>
         </ul>
       </div>
 
@@ -207,13 +248,13 @@ export function ImageUploader({
           {...getRootProps()}
           className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
             isDragActive
-              ? 'border-primary bg-primary/10'
-              : 'border-border hover:border-primary hover:bg-secondary/50'
-          } ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              ? "border-primary bg-primary/10"
+              : "border-border hover:border-primary hover:bg-secondary/50"
+          } ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <input {...getInputProps()} />
           <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-          
+
           {isUploading ? (
             <div>
               <p className="text-lg font-medium mb-2">Uploading...</p>
@@ -255,4 +296,3 @@ export function ImageUploader({
     </div>
   );
 }
-

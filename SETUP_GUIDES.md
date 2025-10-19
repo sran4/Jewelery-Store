@@ -1,6 +1,7 @@
 # 🔧 Complete Setup Guides for Backend Services
 
 ## 📚 Table of Contents
+
 1. [MongoDB Atlas Setup](#1-mongodb-atlas-setup)
 2. [Cloudinary Setup](#2-cloudinary-setup)
 3. [SendGrid Setup](#3-sendgrid-setup)
@@ -13,11 +14,13 @@
 ## 1. MongoDB Atlas Setup
 
 ### Step 1: Create Account
+
 1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
 2. Click **"Start Free"**
 3. Sign up with Google or Email
 
 ### Step 2: Create Cluster
+
 1. Choose **FREE** tier (M0 Sandbox)
 2. Select **AWS** provider (recommended)
 3. Choose closest region to your users
@@ -25,6 +28,7 @@
 5. Click **"Create Cluster"** (takes 3-5 minutes)
 
 ### Step 3: Database Access
+
 1. Click **"Database Access"** in left sidebar
 2. Click **"Add New Database User"**
 3. Choose **"Password"** authentication
@@ -34,6 +38,7 @@
 7. Click **"Add User"**
 
 ### Step 4: Network Access
+
 1. Click **"Network Access"** in left sidebar
 2. Click **"Add IP Address"**
 3. Click **"Allow Access from Anywhere"** (for development)
@@ -41,6 +46,7 @@
 4. For production, add your Vercel deployment IPs
 
 ### Step 5: Get Connection String
+
 1. Click **"Database"** in left sidebar
 2. Click **"Connect"** on your cluster
 3. Choose **"Connect your application"**
@@ -52,11 +58,13 @@
 6. Add database name before `?`: `mongodb+srv://...mongodb.net/jewelrystore?retryWrites=true...`
 
 ### Step 6: Add to .env.local
+
 ```env
 MONGODB_URI=mongodb+srv://jewelryAdmin:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/jewelrystore?retryWrites=true&w=majority
 ```
 
 ### ✅ Verification
+
 Test connection in your app. You should see: `MongoDB Connected Successfully!`
 
 ---
@@ -64,12 +72,14 @@ Test connection in your app. You should see: `MongoDB Connected Successfully!`
 ## 2. Cloudinary Setup
 
 ### Step 1: Create Account
+
 1. Go to [cloudinary.com](https://cloudinary.com)
 2. Click **"Sign Up for Free"**
 3. Sign up with Google or Email
 4. Choose **"Developers"** as your role
 
 ### Step 2: Get Credentials
+
 1. Go to **Dashboard** (auto-redirected after signup)
 2. You'll see your **Account Details**:
    - **Cloud Name**: `dxxxxxxxx`
@@ -77,6 +87,7 @@ Test connection in your app. You should see: `MongoDB Connected Successfully!`
    - **API Secret**: (click to reveal)
 
 ### Step 3: Configure Upload Preset
+
 1. Go to **Settings** → **Upload**
 2. Scroll to **Upload presets**
 3. Click **"Add upload preset"**
@@ -88,19 +99,21 @@ Test connection in your app. You should see: `MongoDB Connected Successfully!`
    - Quality: **Auto**
    - Max file size: **5MB**
    - Allowed formats: `jpg,png,webp`
-   - Transformations: 
+   - Transformations:
      - Resize: Limit, Width: 2000, Height: 2000
      - Quality: Auto
      - Format: Auto
 5. Click **"Save"**
 
 ### Step 4: Create Image Transformations
+
 1. Go to **Settings** → **Upload** → **Upload presets**
 2. Create additional presets:
    - `jewelry-thumbnails`: 400x400, Quality 80
    - `jewelry-gallery`: 1200x1200, Quality 90
 
 ### Step 5: Add to .env.local
+
 ```env
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dxxxxxxxx
 CLOUDINARY_API_KEY=123456789012345
@@ -109,9 +122,11 @@ CLOUDINARY_UPLOAD_PRESET=jewelry-products
 ```
 
 ### ✅ Verification
+
 Upload a test image via API. You should get back URLs and public IDs.
 
 ### 💡 **Image Upload Best Practices:**
+
 - **Dimensions**: 2000×2000px (min 1200×1200px)
 - **File Size**: Under 5MB
 - **Format**: JPEG (90% quality) or WebP
@@ -124,16 +139,18 @@ Upload a test image via API. You should get back URLs and public IDs.
 ## 3. SendGrid Setup
 
 ### Step 1: Create Account
+
 1. Go to [sendgrid.com](https://sendgrid.com)
 2. Click **"Start for Free"**
 3. Sign up (Email verification required)
 4. Complete account setup form
 
 ### Step 2: Verify Sender Identity
+
 1. Go to **Settings** → **Sender Authentication**
 2. Click **"Verify a Single Sender"**
 3. Fill in your details:
-   - From Name: `LuxeJewels`
+   - From Name: `SherGill Official`
    - From Email: `noreply@yourdomain.com` (or your email)
    - Reply To: `admin@yourdomain.com`
    - Company Address: Your business address
@@ -141,6 +158,7 @@ Upload a test image via API. You should get back URLs and public IDs.
 5. Wait for approval (usually instant)
 
 ### Step 3: Create API Key
+
 1. Go to **Settings** → **API Keys**
 2. Click **"Create API Key"**
 3. Name: `Jewelry Store Production`
@@ -149,6 +167,7 @@ Upload a test image via API. You should get back URLs and public IDs.
 6. **COPY THE KEY NOW** (you won't see it again!)
 
 ### Step 4: Add to .env.local
+
 ```env
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxxxxx
 SENDGRID_FROM_EMAIL=noreply@yourdomain.com
@@ -156,6 +175,7 @@ ADMIN_NOTIFICATION_EMAIL=admin@yourdomain.com
 ```
 
 ### Step 5: Test Email Template
+
 ```javascript
 // Test email structure
 {
@@ -167,9 +187,11 @@ ADMIN_NOTIFICATION_EMAIL=admin@yourdomain.com
 ```
 
 ### ✅ Verification
+
 Send a test email. Check both inbox and spam folder.
 
 ### 📊 **Free Tier Limits:**
+
 - 100 emails/day forever free
 - Perfect for contact form notifications!
 
@@ -178,20 +200,23 @@ Send a test email. Check both inbox and spam folder.
 ## 4. Google OAuth Setup
 
 ### Step 1: Google Cloud Console
+
 1. Go to [console.cloud.google.com](https://console.cloud.google.com)
 2. Create new project: **"Jewelry Store Auth"**
 3. Select the project
 
 ### Step 2: Enable APIs
+
 1. Go to **"APIs & Services"** → **"Library"**
 2. Search for **"Google+ API"**
 3. Click **"Enable"**
 
 ### Step 3: Configure OAuth Consent Screen
+
 1. Go to **"APIs & Services"** → **"OAuth consent screen"**
 2. Choose **"External"**
 3. Fill in:
-   - App name: `LuxeJewels Admin`
+   - App name: `SherGill Official Admin`
    - User support email: Your email
    - Developer contact: Your email
 4. Add scopes:
@@ -201,6 +226,7 @@ Send a test email. Check both inbox and spam folder.
 6. Click **"Save and Continue"**
 
 ### Step 4: Create Credentials
+
 1. Go to **"Credentials"** → **"Create Credentials"** → **"OAuth client ID"**
 2. Application type: **"Web application"**
 3. Name: `Jewelry Store Admin Login`
@@ -214,6 +240,7 @@ Send a test email. Check both inbox and spam folder.
 7. **COPY** Client ID and Client Secret
 
 ### Step 5: Add to .env.local
+
 ```env
 GOOGLE_CLIENT_ID=123456789-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxxx
@@ -221,6 +248,7 @@ GOOGLE_ADMIN_EMAIL=youradmin@gmail.com
 ```
 
 ### ✅ Verification
+
 Test Google login. Only your whitelisted email should work.
 
 ---
@@ -228,34 +256,40 @@ Test Google login. Only your whitelisted email should work.
 ## 5. Facebook Pixel Setup
 
 ### Step 1: Create Facebook Business Manager
+
 1. Go to [business.facebook.com](https://business.facebook.com)
 2. Click **"Create Account"**
 3. Enter business details
 
 ### Step 2: Create Pixel
+
 1. Go to **Events Manager**
 2. Click **"Connect Data Sources"** → **"Web"** → **"Facebook Pixel"**
-3. Enter Pixel name: `LuxeJewels Pixel`
+3. Enter Pixel name: `SherGill Official Pixel`
 4. Optional: Enter website URL
 5. Click **"Create Pixel"**
 
 ### Step 3: Get Pixel ID
+
 1. In Events Manager, click your pixel
 2. Copy the **Pixel ID** (15-16 digit number)
    - Example: `123456789012345`
 
 ### Step 4: Add to .env.local
+
 ```env
 NEXT_PUBLIC_FACEBOOK_PIXEL_ID=123456789012345
 ```
 
 ### Step 5: Events to Track
+
 - PageView (automatic)
 - ViewContent (product pages)
 - Contact (form submissions)
 - Search (product search)
 
 ### ✅ Verification
+
 1. Install **Facebook Pixel Helper** Chrome extension
 2. Visit your site
 3. Extension should show green checkmark
@@ -266,30 +300,35 @@ NEXT_PUBLIC_FACEBOOK_PIXEL_ID=123456789012345
 ## 6. Google Analytics Setup
 
 ### Step 1: Create GA4 Property
+
 1. Go to [analytics.google.com](https://analytics.google.com)
 2. Click **"Start measuring"**
 3. Account name: `Jewelry Store`
-4. Property name: `LuxeJewels Website`
+4. Property name: `SherGill Official Website`
 5. Time zone and currency: Select yours
 6. Click **"Next"**
 
 ### Step 2: Setup Data Stream
+
 1. Choose **"Web"**
 2. Website URL: `https://yourdomain.com`
-3. Stream name: `LuxeJewels Main Site`
+3. Stream name: `SherGill Official Main Site`
 4. Click **"Create stream"**
 
 ### Step 3: Get Measurement ID
+
 1. You'll see your **Measurement ID**:
    - Format: `G-XXXXXXXXXX`
 2. **COPY** this ID
 
 ### Step 4: Add to .env.local
+
 ```env
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 ### Step 5: Events to Track
+
 - page_view (automatic)
 - product_view
 - search
@@ -297,6 +336,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 - category_click
 
 ### ✅ Verification
+
 1. Visit your site
 2. Go to GA4 → **Reports** → **Realtime**
 3. You should see yourself as active user
@@ -306,14 +346,14 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 ## 📧 Email Service Comparison
 
-| Feature | SendGrid | EmailJS |
-|---------|----------|---------|
-| **Free Tier** | 100/day | 200/month |
-| **Deliverability** | Excellent | Good |
-| **Templates** | Yes | Limited |
-| **Analytics** | Yes | Basic |
-| **API Quality** | Professional | Simple |
-| **Setup Complexity** | Medium | Easy |
+| Feature              | SendGrid     | EmailJS   |
+| -------------------- | ------------ | --------- |
+| **Free Tier**        | 100/day      | 200/month |
+| **Deliverability**   | Excellent    | Good      |
+| **Templates**        | Yes          | Limited   |
+| **Analytics**        | Yes          | Basic     |
+| **API Quality**      | Professional | Simple    |
+| **Setup Complexity** | Medium       | Easy      |
 
 **Recommendation**: **SendGrid** - Better for professional use, more reliable delivery
 
@@ -392,6 +432,7 @@ RATE_LIMIT_API_CALLS=100
 ### **Recommended Upload Specifications:**
 
 #### **For Best Quality at 5MB:**
+
 - **Dimensions**: 2000×2000 pixels (for high-res displays)
 - **Format**: JPEG at 90% quality
 - **Aspect Ratio**: 1:1 (Square) - enforced by cropper
@@ -400,6 +441,7 @@ RATE_LIMIT_API_CALLS=100
 - **File Size**: 2-5MB per image
 
 #### **What Cloudinary Does Automatically:**
+
 1. **Optimization**: Reduces file size without quality loss
 2. **Format Conversion**: Creates WebP versions
 3. **Responsive Images**: Generates multiple sizes
@@ -411,7 +453,9 @@ RATE_LIMIT_API_CALLS=100
 5. **Lazy Loading**: Automatic loading optimization
 
 #### **Admin Upload Form Notes:**
+
 Will display these guidelines:
+
 ```
 📸 Image Upload Guidelines:
 • Format: JPEG, PNG, or WebP
@@ -428,6 +472,7 @@ Will display these guidelines:
 ## 🔐 Security Best Practices
 
 ### **Password Requirements Display:**
+
 ```
 Your password must contain:
 ✓ At least 8 characters
@@ -440,11 +485,13 @@ Password Strength: [======    ] Medium
 ```
 
 ### **Rate Limiting:**
+
 - **Login**: 5 attempts per hour per IP
 - **Contact Form**: 10 submissions per hour per IP
 - **API Calls**: 100 requests per hour per IP
 
 ### **Admin Access:**
+
 - Only your whitelisted Google email can login via OAuth
 - Case-insensitive username (admin@site.com = ADMIN@SITE.COM)
 - Session expires after 30 days (with remember me)
@@ -454,14 +501,14 @@ Password Strength: [======    ] Medium
 
 ## 📊 Quick Reference - Where to Get What
 
-| Service | Website | Free Tier | What You Need |
-|---------|---------|-----------|---------------|
-| **MongoDB** | mongodb.com/atlas | 512MB storage | Connection URI |
-| **Cloudinary** | cloudinary.com | 25GB storage, 25GB bandwidth | Cloud name, API key, Secret |
-| **SendGrid** | sendgrid.com | 100 emails/day | API Key |
-| **Google OAuth** | console.cloud.google.com | Unlimited | Client ID, Secret |
-| **Facebook Pixel** | business.facebook.com | Free | Pixel ID |
-| **Google Analytics** | analytics.google.com | Free | Measurement ID |
+| Service              | Website                  | Free Tier                    | What You Need               |
+| -------------------- | ------------------------ | ---------------------------- | --------------------------- |
+| **MongoDB**          | mongodb.com/atlas        | 512MB storage                | Connection URI              |
+| **Cloudinary**       | cloudinary.com           | 25GB storage, 25GB bandwidth | Cloud name, API key, Secret |
+| **SendGrid**         | sendgrid.com             | 100 emails/day               | API Key                     |
+| **Google OAuth**     | console.cloud.google.com | Unlimited                    | Client ID, Secret           |
+| **Facebook Pixel**   | business.facebook.com    | Free                         | Pixel ID                    |
+| **Google Analytics** | analytics.google.com     | Free                         | Measurement ID              |
 
 ---
 
@@ -479,24 +526,28 @@ Password Strength: [======    ] Medium
 ## 🆘 Troubleshooting
 
 ### MongoDB Connection Issues:
+
 - Check IP whitelist in Network Access
 - Verify username/password
 - Ensure connection string has database name
 - Check firewall settings
 
 ### Cloudinary Upload Fails:
+
 - Verify API credentials
 - Check file size (max 5MB)
 - Ensure correct upload preset
 - Check allowed formats
 
 ### SendGrid Emails Not Received:
+
 - Verify sender email address
 - Check spam folder
 - Verify API key permissions
 - Check daily limit (100 emails)
 
 ### Google OAuth Not Working:
+
 - Verify redirect URIs match exactly
 - Check authorized domains
 - Ensure admin email is whitelisted
@@ -507,10 +558,10 @@ Password Strength: [======    ] Medium
 ## 📝 Next Steps
 
 After setting up all services:
+
 1. ✅ Copy all credentials to `.env.local`
 2. ✅ Test each service individually
 3. ✅ Verify all integrations work
 4. ✅ Ready to implement admin panel!
 
 **All services have generous free tiers - perfect for getting started!** 🎉
-

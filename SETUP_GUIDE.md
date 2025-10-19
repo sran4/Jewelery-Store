@@ -1,6 +1,6 @@
 # 🚀 Jewelry Store Setup Guide
 
-Welcome to your luxury jewelry e-commerce store! This guide will help you get your project up and running.
+Welcome to your premium jewelry e-commerce store! This guide will help you get your project up and running.
 
 ## 📋 Prerequisites
 
@@ -301,4 +301,4 @@ If you encounter any issues:
 
 ---
 
-**Happy coding! 🚀** Your luxury jewelry store is ready to shine!
+**Happy coding! 🚀** Your premium jewelry store is ready to shine!
