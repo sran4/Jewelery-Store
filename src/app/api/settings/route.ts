@@ -52,7 +52,8 @@ export async function GET(request: Request) {
         },
       };
 
-      settings = await SiteSettings.create(defaultSettings);
+      const createdSettings = await SiteSettings.create(defaultSettings);
+      settings = createdSettings.toObject();
     } else {
       // Ensure features object has correct structure (backwards compatibility)
       if (!settings.features || typeof settings.features !== "object") {
