@@ -7,10 +7,17 @@ export async function POST(request: Request) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
+    
+    console.log('Upload API - Session check:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userEmail: session?.user?.email,
+    });
 
     if (!session || !session.user) {
+      console.error('Upload API - Unauthorized: No session found');
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - Please login again' },
         { status: 401 }
       );
     }
