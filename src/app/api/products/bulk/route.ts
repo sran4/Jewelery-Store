@@ -40,7 +40,14 @@ export async function POST(request: Request) {
         // Collect all image public IDs
         const allPublicIds: string[] = [];
         for (const product of productsToDelete) {
-          const ids = product.images.map((img) => img.publicId).filter(Boolean);
+          const ids = product.images
+            .filter((img): img is { url: string; publicId: string } => 
+              typeof img === "object" && 
+              img !== null && 
+              "publicId" in img && 
+              !!img.publicId
+            )
+            .map((img) => img.publicId);
           allPublicIds.push(...ids);
         }
 
