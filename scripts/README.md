@@ -44,7 +44,59 @@ node scripts/seed-data.js
 
 ## 📜 Available Scripts
 
-### 1. `clear-database.js` - Clear Database
+### 1. `validate-build.js` - Pre-Deployment Validation ⚡ **NEW**
+
+**Purpose**: Validates your code before deployment to catch errors early.
+
+**What it checks:**
+- ✅ TypeScript compilation (all type errors)
+- ✅ ESLint (code quality)
+- ✅ Build test (optional with `--full` flag)
+
+**Usage:**
+```bash
+# Quick validation (TypeScript + ESLint) - 10-30 seconds
+node scripts/validate-build.js
+
+# Full validation (includes build) - 1-2 minutes
+node scripts/validate-build.js --full
+
+# Or use npm scripts
+npm run type-check     # TypeScript only
+npm run validate       # TypeScript + ESLint
+npm run build:check    # Full validation + build
+```
+
+**When to use:**
+- ✅ **Before every Git push** (prevents Vercel failures)
+- ✅ After major code changes
+- ✅ Before creating pull requests
+- ✅ When debugging build issues
+
+**Example output:**
+```
+==================================================
+🚀 Pre-Deployment Validation
+==================================================
+
+🔍 Step 1/3: TypeScript Type Check...
+✅ TypeScript check passed!
+
+🔍 Step 2/3: ESLint Check...
+✅ ESLint check passed!
+
+⏭️  Step 3/3: Build test skipped (use --full to include)
+
+==================================================
+✅ VALIDATION PASSED
+==================================================
+
+🎉 All checks passed! Safe to deploy to Vercel.
+```
+
+---
+
+### 2. `clear-database.js` - Clear Database
 
 Removes all products and categories from MongoDB.
 
