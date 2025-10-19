@@ -247,7 +247,6 @@ export default function EditProductPage() {
         quantityInStock: formData.quantityInStock || 0,
         rating: formData.rating || 0,
         popularityScore: formData.popularityScore || 50,
-        discount: formData.discount || 0,
       };
 
       const res = await fetch(`/api/products/${productId}`, {
