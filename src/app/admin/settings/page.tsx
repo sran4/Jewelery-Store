@@ -151,10 +151,13 @@ export default function SettingsPage() {
     console.log(`🔄 Changing ${parent}.${field} to:`, value);
     setHasUnsavedChanges(true);
     setSettings((prev) => {
+      const parentKey = parent as keyof SiteSettings;
+      const parentValue = prev[parentKey];
+      
       const updated = {
         ...prev,
         [parent]: {
-          ...prev[parent as keyof SiteSettings],
+          ...(typeof parentValue === 'object' && parentValue !== null ? parentValue : {}),
           [field]: value,
         },
       };
