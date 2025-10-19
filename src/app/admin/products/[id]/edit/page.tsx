@@ -169,13 +169,18 @@ export default function EditProductPage() {
   };
 
   const handleNestedChange = (parent: string, field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent as keyof ProductFormData],
-        [field]: value,
-      },
-    }));
+    setFormData((prev) => {
+      const parentKey = parent as keyof ProductFormData;
+      const parentValue = prev[parentKey];
+      
+      return {
+        ...prev,
+        [parent]: {
+          ...(typeof parentValue === 'object' && parentValue !== null ? parentValue : {}),
+          [field]: value,
+        },
+      };
+    });
   };
 
   const handleArrayChange = (field: string, value: string) => {
