@@ -16,6 +16,7 @@ import {
   FolderOpen,
   User,
   KeyRound,
+  Stethoscope,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -28,6 +29,7 @@ const navigation = [
   { name: "Contact Submissions", href: "/admin/contact", icon: Mail },
   { name: "Settings", href: "/admin/settings", icon: Settings },
   { name: "Change Password", href: "/admin/change-password", icon: KeyRound },
+  { name: "Diagnostics", href: "/admin/diagnostics", icon: Stethoscope },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
