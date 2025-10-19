@@ -43,9 +43,12 @@ export async function POST(request: Request) {
     console.log('Attempting Cloudinary upload...');
 
     // Upload to Cloudinary
+    console.log('Uploading to folder:', folder ? `jewelry-store/${folder}` : 'jewelry-store');
+    
     const uploadResponse = await cloudinary.uploader.upload(image, {
       folder: folder ? `jewelry-store/${folder}` : 'jewelry-store',
       resource_type: 'image',
+      allowed_formats: ['jpg', 'png', 'webp', 'gif', 'jpeg'],
       transformation: [
         { width: 1200, height: 1200, crop: 'limit' },
         { quality: 'auto' },
@@ -53,7 +56,10 @@ export async function POST(request: Request) {
       ],
     });
 
-    console.log('Upload successful:', uploadResponse.secure_url);
+    console.log('Upload successful!', {
+      url: uploadResponse.secure_url,
+      publicId: uploadResponse.public_id,
+    });
 
     return NextResponse.json({
       success: true,
