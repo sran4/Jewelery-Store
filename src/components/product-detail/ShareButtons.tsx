@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/types";
+import { getFirstImageUrl } from "@/lib/imageUtils";
 import { Facebook, Link as LinkIcon, Twitter } from "lucide-react";
 import { useState } from "react";
 
@@ -42,10 +43,11 @@ export function ShareButtons({ product }: ShareButtonsProps) {
   };
 
   const shareToPinterest = () => {
+    const imageUrl = getFirstImageUrl(product.images);
     const url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
       shareUrl
     )}&media=${encodeURIComponent(
-      product.images[0]
+      imageUrl
     )}&description=${encodeURIComponent(shareText)}`;
     window.open(url, "_blank", "width=600,height=400");
   };

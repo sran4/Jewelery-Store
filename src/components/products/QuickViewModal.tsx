@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
+import { getImageUrl } from "@/lib/imageUtils";
 import { Star, Package } from "lucide-react";
 import { useState } from "react";
 
@@ -35,7 +36,7 @@ export function QuickViewModal({
         <div>
           <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-secondary/30">
             <Image
-              src={product.images[selectedImage]}
+              src={getImageUrl(product.images[selectedImage])}
               alt={product.title}
               fill
               className="object-cover"
@@ -54,7 +55,7 @@ export function QuickViewModal({
                 }`}
               >
                 <Image
-                  src={image}
+                  src={getImageUrl(image)}
                   alt={`${product.title} ${index + 1}`}
                   fill
                   className="object-cover"

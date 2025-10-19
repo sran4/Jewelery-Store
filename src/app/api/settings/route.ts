@@ -53,8 +53,17 @@ export async function GET(request: Request) {
       };
 
       const createdSettings = await SiteSettings.create(defaultSettings);
-      settings = createdSettings.toObject();
-    } else {
+      settings = createdSettings.toObject() as any;
+    }
+    
+    if (!settings) {
+      return NextResponse.json(
+        { success: false, error: "Failed to load settings" },
+        { status: 500 }
+      );
+    }
+    
+    {
       // Ensure features object has correct structure (backwards compatibility)
       if (!settings.features || typeof settings.features !== "object") {
         settings.features = { maintenanceMode: false };

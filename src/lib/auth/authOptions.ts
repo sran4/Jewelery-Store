@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
           await admin.save();
 
           return {
-            id: admin._id.toString(),
+            id: String(admin._id),
             email: admin.email,
             name: admin.name,
             role: admin.role,

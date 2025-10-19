@@ -20,7 +20,7 @@ export interface IProduct extends Document {
   material?: string;
   inStock: boolean;
   quantityInStock: number;
-  isNew?: boolean;
+  // isNew is omitted from interface as it's a reserved Mongoose Document property
   isFeatured?: boolean;
   popularityScore?: number;
   images: (string | IProductImage)[]; // Can be string array OR object array

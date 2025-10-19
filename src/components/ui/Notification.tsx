@@ -98,7 +98,7 @@ export function useNotification() {
   };
 
   const removeNotification = (id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.onClose !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   const success = (title: string, message?: string) => {
