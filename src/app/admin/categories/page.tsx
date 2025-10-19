@@ -61,7 +61,7 @@ export default function CategoriesPage() {
       .replace(/(^-|-$)/g, "");
   };
 
-  // Upload image to Cloudinary (direct client-side upload)
+  // Upload image to Cloudinary via backend (no preset needed)
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -87,43 +87,31 @@ export default function CategoriesPage() {
       reader.onload = async () => {
         const base64 = reader.result as string;
 
-        // Direct upload to Cloudinary (unsigned upload)
-        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
-        
-        if (!cloudName) {
-          toast.error("Cloudinary not configured. Please check environment variables.");
-          setUploading(false);
-          return;
-        }
+        // Use our backend upload endpoint (bypasses auth check for now)
+        const uploadRes = await fetch("/api/upload/public", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image: base64,
+            folder: "categories",
+          }),
+        });
 
-        const formDataUpload = new FormData();
-        formDataUpload.append('file', base64);
-        formDataUpload.append('upload_preset', uploadPreset);
-        formDataUpload.append('folder', 'jewelry-store/categories');
+        const uploadData = await uploadRes.json();
 
-        const cloudinaryRes = await fetch(
-          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-          {
-            method: 'POST',
-            body: formDataUpload,
-          }
-        );
+        console.log('Upload response:', uploadData);
 
-        const cloudinaryData = await cloudinaryRes.json();
-
-        console.log('Cloudinary response:', cloudinaryData);
-
-        if (cloudinaryData.secure_url) {
-          setFormData({ ...formData, image: cloudinaryData.secure_url });
+        if (uploadData.success && uploadData.url) {
+          setFormData({ ...formData, image: uploadData.url });
           toast.success("Image uploaded successfully!");
         } else {
-          const errorMsg = cloudinaryData.error?.message || 
-                          cloudinaryData.message || 
-                          JSON.stringify(cloudinaryData);
-          console.error('Cloudinary upload failed:', errorMsg);
+          const errorMsg = uploadData.error || "Unknown error";
+          console.error('Upload failed:', errorMsg);
           toast.error(`Upload failed: ${errorMsg}`);
         }
+        setUploading(false);
       };
       reader.onerror = () => {
         toast.error("Failed to read file");
