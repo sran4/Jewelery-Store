@@ -168,13 +168,13 @@ export default function AdminContactPage() {
   };
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, "default" | "success" | "warning"> = {
+    const variants: Record<string, "primary" | "secondary" | "success" | "warning" | "danger"> = {
       new: "warning",
-      read: "default",
+      read: "secondary",
       replied: "success",
     };
     return (
-      <Badge variant={variants[status] || "default"}>
+      <Badge variant={variants[status] || "secondary"}>
         {status.toUpperCase()}
       </Badge>
     );
