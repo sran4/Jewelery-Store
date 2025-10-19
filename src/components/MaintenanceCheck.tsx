@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
+import { FancySpinnerOverlay } from "@/components/common/FancySpinner";
 
 export function MaintenanceCheck() {
   const { data: session, status } = useSession();
@@ -66,12 +67,11 @@ export function MaintenanceCheck() {
     pathname !== "/maintenance"
   ) {
     return (
-      <div className="fixed inset-0 bg-background z-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
+      <FancySpinnerOverlay
+        size="xl"
+        text="Loading SherGill Official"
+        subtext="Preparing your jewelry experience"
+      />
     );
   }
 

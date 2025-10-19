@@ -36,11 +36,20 @@ const config: Config = {
         sans: ["Inter", "system-ui", "sans-serif"],
         serif: ["Playfair Display", "Georgia", "serif"],
       },
+      animationDelay: {
+        '0': '0ms',
+        '100': '100ms',
+        '200': '200ms',
+        '300': '300ms',
+        '400': '400ms',
+        '500': '500ms',
+      },
       animation: {
         gradient: "gradient 15s ease infinite",
         "fade-in": "fade-in 0.5s ease-in-out",
         "slide-up": "slide-up 0.5s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        "spin-reverse": "spin-reverse 1s linear infinite",
       },
       keyframes: {
         gradient: {
@@ -77,6 +86,14 @@ const config: Config = {
           "100%": {
             transform: "scale(1)",
             opacity: "1",
+          },
+        },
+        "spin-reverse": {
+          "0%": {
+            transform: "rotate(360deg)",
+          },
+          "100%": {
+            transform: "rotate(0deg)",
           },
         },
       },
