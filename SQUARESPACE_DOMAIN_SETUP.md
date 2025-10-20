@@ -66,6 +66,7 @@ To configure yourdomain.com, add these DNS records:
 ```
 
 📝 **IMPORTANT:** Keep this tab open or write down these values:
+
 - **A Record IP**: `76.76.21.21` (or whatever Vercel shows)
 - **CNAME Target**: `cname.vercel-dns.com`
 
@@ -91,6 +92,7 @@ To configure yourdomain.com, add these DNS records:
 3. You'll see a list of existing DNS records
 
 **Example of what you might see:**
+
 ```
 Type    Host    Data                        TTL
 A       @       142.251.32.14              3600
@@ -102,16 +104,19 @@ AAAA    @       2001:4860:4802:32::15      3600
 ⚠️ **IMPORTANT:** Before adding new records, remove conflicting ones.
 
 **Delete these record types (if they exist):**
+
 - ✅ Any **A** record with Host `@`
 - ✅ Any **AAAA** record with Host `@`
 - ✅ Any **CNAME** record with Host `@`
 
 **Keep these records (DO NOT DELETE):**
+
 - ❌ **MX** records (for email)
 - ❌ **TXT** records (for verification, SPF, DKIM)
 - ❌ **CNAME** records for subdomains like `mail`, `calendar`, etc.
 
 **To delete a record:**
+
 1. Find the record in the list
 2. Click the **trash icon** 🗑️ or **"Delete"** button next to it
 3. Confirm deletion
@@ -124,12 +129,12 @@ Now add Vercel's A record:
 2. Select **"A"** from the record type dropdown
 3. Fill in the fields:
 
-   | Field | Value |
-   |-------|-------|
-   | **Type** | A |
-   | **Host** | `@` (or leave blank if auto-filled) |
-   | **Points to** or **Value** or **Data** | `76.76.21.21` (IP from Vercel) |
-   | **TTL** | `3600` or `Auto` |
+   | Field                                  | Value                               |
+   | -------------------------------------- | ----------------------------------- |
+   | **Type**                               | A                                   |
+   | **Host**                               | `@` (or leave blank if auto-filled) |
+   | **Points to** or **Value** or **Data** | `76.76.21.21` (IP from Vercel)      |
+   | **TTL**                                | `3600` or `Auto`                    |
 
 4. Click **"Save"** or **"Add"**
 
@@ -141,12 +146,12 @@ Now add the CNAME record for www subdomain:
 2. Select **"CNAME"** from the record type dropdown
 3. Fill in the fields:
 
-   | Field | Value |
-   |-------|-------|
-   | **Type** | CNAME |
-   | **Host** | `www` |
+   | Field                                  | Value                  |
+   | -------------------------------------- | ---------------------- |
+   | **Type**                               | CNAME                  |
+   | **Host**                               | `www`                  |
    | **Points to** or **Value** or **Data** | `cname.vercel-dns.com` |
-   | **TTL** | `3600` or `Auto` |
+   | **TTL**                                | `3600` or `Auto`       |
 
 4. Click **"Save"** or **"Add"**
 
@@ -181,6 +186,7 @@ Go back to your Vercel browser tab (Settings → Domains)
 3. Click **"Add"**
 
 Vercel will automatically:
+
 - Configure the www subdomain
 - Set up redirect from www → main domain
 - Issue SSL certificate for both
@@ -223,11 +229,13 @@ DNS changes take time to spread across the internet:
 **Method B: Use Command Line (Windows)**
 
 Open PowerShell and run:
+
 ```powershell
 nslookup yourdomain.com
 ```
 
 **Expected result:**
+
 ```
 Name:    yourdomain.com
 Address: 76.76.21.21
@@ -257,11 +265,13 @@ Once DNS propagates, your Vercel dashboard should show:
 Vercel automatically issues free SSL certificates via Let's Encrypt!
 
 **Timeline:**
+
 - DNS must be valid first (see Step 18)
 - SSL certificate issues within 5-10 minutes after DNS is valid
 - Auto-renews every 90 days
 
 **Check SSL Status:**
+
 1. Vercel → Settings → Domains
 2. Look for **"SSL"** column
 3. Should say **"Active"** ✅
@@ -303,27 +313,35 @@ For the environment variable change to take effect:
 Open your browser and test these URLs:
 
 **Test 1: Main Domain with HTTPS**
+
 ```
 https://yourdomain.com
 ```
+
 ✅ Should load your site with padlock 🔒
 
 **Test 2: WWW Subdomain**
+
 ```
 https://www.yourdomain.com
 ```
+
 ✅ Should redirect to main domain
 
 **Test 3: HTTP Redirect**
+
 ```
 http://yourdomain.com
 ```
+
 ✅ Should redirect to HTTPS version
 
 **Test 4: WWW without HTTPS**
+
 ```
 http://www.yourdomain.com
 ```
+
 ✅ Should redirect to https://yourdomain.com
 
 ### **Step 23: Mobile Test**
@@ -381,12 +399,14 @@ Use this checklist to confirm everything is working:
 ### **Problem 1: "Invalid Configuration" After 2+ Hours**
 
 **Symptoms:**
+
 - Vercel still shows "Invalid Configuration"
 - DNS propagation seems stuck
 
 **Solutions:**
 
 **Check 1: Verify DNS Records**
+
 1. Login to Squarespace Domains
 2. Go to DNS Settings
 3. Verify records match exactly:
@@ -396,17 +416,21 @@ Use this checklist to confirm everything is working:
    ```
 
 **Check 2: Look for Typos**
+
 - Common mistake: `cname.vercel-dns.com` vs `cname.vercel.dns.com`
 - Must be exact: `cname.vercel-dns.com`
 
 **Check 3: Remove Duplicates**
+
 - Make sure there's only ONE A record with `@`
 - Delete any duplicate entries
 
 **Check 4: Check DNS Globally**
+
 ```powershell
 nslookup yourdomain.com 8.8.8.8
 ```
+
 This checks Google's DNS servers specifically.
 
 ---
@@ -414,21 +438,25 @@ This checks Google's DNS servers specifically.
 ### **Problem 2: "Not Secure" Warning**
 
 **Symptoms:**
+
 - Site loads but shows "Not Secure" or broken padlock
 - Browser warning about certificate
 
 **Solutions:**
 
 **Wait Longer**
+
 - SSL issues 5-10 minutes AFTER DNS is valid
 - Total time: DNS propagation + 10 minutes
 
 **Force Refresh Vercel**
+
 1. Go to Vercel → Settings → Domains
 2. Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
 3. Check if SSL status changed to "Active"
 
 **Check Certificate Status**
+
 1. Vercel → Settings → Domains
 2. Click on your domain
 3. Look for SSL certificate details
@@ -439,6 +467,7 @@ This checks Google's DNS servers specifically.
 ### **Problem 3: Site Not Loading at All**
 
 **Symptoms:**
+
 - Browser shows "This site can't be reached"
 - "DNS_PROBE_FINISHED_NXDOMAIN" error
 
@@ -447,26 +476,31 @@ This checks Google's DNS servers specifically.
 **Clear Your DNS Cache**
 
 **Windows:**
+
 ```powershell
 ipconfig /flushdns
 ```
 
 **Mac:**
+
 ```bash
 sudo dscacheutil -flushcache
 sudo killall -HUP mDNSResponder
 ```
 
 **Try Different Network**
+
 - Try mobile data instead of WiFi
 - Try a different WiFi network
 - Your local DNS might be cached
 
 **Use Incognito/Private Mode**
+
 - Opens a fresh browser session
 - Bypasses local caching
 
 **Check on Different Device**
+
 - Try your phone
 - Try a different computer
 - Confirms it's not device-specific
@@ -476,26 +510,31 @@ sudo killall -HUP mDNSResponder
 ### **Problem 4: WWW Not Redirecting**
 
 **Symptoms:**
+
 - `yourdomain.com` works
 - `www.yourdomain.com` doesn't load or doesn't redirect
 
 **Solutions:**
 
 **Verify CNAME Record**
+
 1. Squarespace → DNS Settings
 2. Confirm: `www → cname.vercel-dns.com`
 3. No typos in the target
 
 **Re-add WWW in Vercel**
+
 1. Vercel → Settings → Domains
 2. Remove www subdomain
 3. Wait 1 minute
 4. Add it back again
 
 **Check DNS for WWW**
+
 ```powershell
 nslookup www.yourdomain.com
 ```
+
 Should show CNAME pointing to Vercel.
 
 ---
@@ -503,6 +542,7 @@ Should show CNAME pointing to Vercel.
 ### **Problem 5: Email Stopped Working**
 
 **Symptoms:**
+
 - Domain works for website
 - Email stopped receiving/sending
 
@@ -517,6 +557,7 @@ You may have accidentally deleted email records. Add them back:
 3. Add your email provider's records back
 
 **Common email records:**
+
 ```
 Type    Host    Data/Priority           TTL
 ────────────────────────────────────────────
@@ -525,6 +566,7 @@ TXT     @       v=spf1 include:...      3600
 ```
 
 If you don't know your email records:
+
 - Contact your email provider
 - They'll give you the correct records
 - Or check Squarespace email documentation
@@ -534,20 +576,24 @@ If you don't know your email records:
 ### **Problem 6: Old Site Still Showing**
 
 **Symptoms:**
+
 - Old website or placeholder appears
 - Not showing your Vercel site
 
 **Solutions:**
 
 **Clear Browser Cache**
+
 - Hard refresh: `Ctrl + Shift + R` or `Cmd + Shift + R`
 - Or clear all browser data
 
 **Check in Incognito**
+
 - Opens without cache
 - Shows actual current site
 
 **Verify Vercel Deployment**
+
 1. Vercel → Deployments
 2. Make sure latest deployment is "Ready"
 3. Visit the Vercel URL (e.g., `jewelery-store-abc123.vercel.app`)
@@ -640,6 +686,7 @@ Once everything is working, you should have:
 ✅ Professional email (if configured)
 
 **Your site is now live at:**
+
 ```
 https://yourdomain.com
 ```
@@ -659,7 +706,7 @@ STEP 1: VERCEL
   → Settings → Domains → Add
   → Copy DNS records
 
-STEP 2: SQUARESPACE  
+STEP 2: SQUARESPACE
   → DNS Settings
   → Delete conflicting records
   → Add: A @ 76.76.21.21
@@ -687,4 +734,3 @@ STEP 5: TEST
 **Last Updated:** October 2024
 **For:** Shergill Official Jewelry Store
 **Stack:** Next.js + Vercel + Squarespace Domains
-
