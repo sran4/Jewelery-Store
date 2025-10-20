@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { INQUIRY_TYPES } from "@/lib/constants";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { motion } from "framer-motion";
 
 interface ContactFormProps {
   isModal?: boolean;
@@ -122,7 +124,42 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
+      {/* Logo & Brand Header */}
+      <div className="text-center pb-6 border-b border-border">
+        <div className="flex justify-center mb-4">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-1 ring-2 ring-red-700/40 shadow-lg"
+          >
+            <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Shergill Official Logo"
+                width={64}
+                height={64}
+                className="object-cover scale-110"
+                priority
+              />
+            </div>
+          </motion.div>
+        </div>
+        <motion.h2
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-2xl font-serif font-bold bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 dark:from-amber-400 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent"
+        >
+          Shergill Official
+        </motion.h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          We'd love to hear from you
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
           label="Name"
@@ -234,5 +271,6 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
         )}
       </Button>
     </form>
+    </div>
   );
 }

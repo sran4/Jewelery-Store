@@ -16,7 +16,6 @@ import {
   FolderOpen,
   User,
   KeyRound,
-  Stethoscope,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -29,7 +28,6 @@ const navigation = [
   { name: "Contact Submissions", href: "/admin/contact", icon: Mail },
   { name: "Settings", href: "/admin/settings", icon: Settings },
   { name: "Change Password", href: "/admin/change-password", icon: KeyRound },
-  { name: "Diagnostics", href: "/admin/diagnostics", icon: Stethoscope },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -66,13 +64,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <Link href="/admin" className="flex items-center gap-2 group">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 p-1 group-hover:bg-gradient-to-br group-hover:from-primary/30 group-hover:via-accent/30 group-hover:to-primary/30 transition-all duration-300 ring-2 ring-primary/30">
-                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-0.5">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-1 group-hover:bg-gradient-to-br group-hover:from-red-700/30 group-hover:via-red-800/30 group-hover:to-red-700/30 transition-all duration-300 ring-2 ring-red-700/40">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                   <Image
                     src="/logo.png"
                     alt="Shergill Official Logo"
                     fill
-                    className="object-contain"
+                    className="object-cover scale-110"
                   />
                 </div>
               </div>

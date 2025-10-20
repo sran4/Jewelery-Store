@@ -9,13 +9,13 @@ export default function MaintenancePage() {
       <div className="max-w-2xl w-full text-center space-y-8">
         {/* Logo */}
         <div className="flex justify-center">
-          <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 p-2 ring-4 ring-primary/30">
-            <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
+          <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-2 ring-4 ring-red-700/40">
+            <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
               <Image
                 src="/logo.png"
                 alt="Shergill Official Logo"
                 fill
-                className="object-contain p-1"
+                className="object-cover scale-110"
               />
             </div>
           </div>

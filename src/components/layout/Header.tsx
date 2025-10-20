@@ -39,13 +39,13 @@ export function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 p-1 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all duration-300 ring-2 ring-primary/30 group-hover:ring-primary/60">
-              <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-1 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-red-700/50 transition-all duration-300 ring-2 ring-red-700/40 group-hover:ring-red-700/70">
+              <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                 <Image
                   src="/logo.png"
                   alt="Shergill Official Logo"
                   fill
-                  className="object-contain p-0.5"
+                  className="object-cover scale-110"
                   priority
                 />
               </div>
