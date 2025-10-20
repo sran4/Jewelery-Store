@@ -68,6 +68,7 @@ export default function ChangePasswordPage() {
         body: JSON.stringify({
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword,
         }),
       });
 

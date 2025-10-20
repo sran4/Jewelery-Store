@@ -39,7 +39,7 @@ export function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-1 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-red-700/50 transition-all duration-300 ring-2 ring-red-700/40 group-hover:ring-red-700/70">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-amber-500/25 via-yellow-500/25 to-amber-600/25 p-1 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-amber-600/50 transition-all duration-300 ring-2 ring-amber-600/50 group-hover:ring-amber-600/70">
               <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                 <Image
                   src="/logo.png"

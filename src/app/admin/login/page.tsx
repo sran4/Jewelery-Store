@@ -76,7 +76,7 @@ function LoginForm() {
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ duration: 0.6, type: "spring" }}
-                className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-red-700/30 via-red-800/30 to-red-700/30 p-1 ring-4 ring-red-700/70 shadow-2xl"
+                className="relative w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-amber-500/30 via-yellow-500/30 to-amber-600/30 p-1 ring-4 ring-amber-600/70 shadow-2xl"
               >
                 <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                   <Image

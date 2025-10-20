@@ -90,13 +90,13 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-11 h-11 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 p-1 group-hover:scale-105 transition-all duration-300 ring-2 ring-primary/30">
-                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 p-1">
+              <div className="relative w-11 h-11 rounded-full overflow-hidden bg-gradient-to-br from-amber-500/25 via-yellow-500/25 to-amber-600/25 p-1 group-hover:scale-105 transition-all duration-300 ring-2 ring-amber-600/50">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                   <Image
                     src="/logo.png"
                     alt="Shergill Official Logo"
                     fill
-                    className="object-contain p-0.5"
+                    className="object-cover scale-110"
                   />
                 </div>
               </div>

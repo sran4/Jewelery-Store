@@ -64,7 +64,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <Link href="/admin" className="flex items-center gap-2 group">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-red-700/20 via-red-800/20 to-red-700/20 p-1 group-hover:bg-gradient-to-br group-hover:from-red-700/30 group-hover:via-red-800/30 group-hover:to-red-700/30 transition-all duration-300 ring-2 ring-red-700/40">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-amber-500/25 via-yellow-500/25 to-amber-600/25 p-1 group-hover:bg-gradient-to-br group-hover:from-amber-500/30 group-hover:via-yellow-500/30 group-hover:to-amber-600/30 transition-all duration-300 ring-2 ring-amber-600/50">
                 <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-900 flex items-center justify-center">
                   <Image
                     src="/logo.png"
