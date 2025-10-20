@@ -22,22 +22,59 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [messageError, setMessageError] = useState("");
+
+  const MIN_MESSAGE_LENGTH = 10;
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
+    const { name, value } = e.target;
+    
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
+
+    // Clear error when user starts typing
+    if (name === "message") {
+      setMessageError("");
+    }
+    if (status === "error") {
+      setStatus("idle");
+      setErrorMessage("");
+    }
+  };
+
+  const validateMessage = (): boolean => {
+    if (!formData.message.trim()) {
+      setMessageError("Message is required");
+      return false;
+    }
+    
+    if (formData.message.trim().length < MIN_MESSAGE_LENGTH) {
+      setMessageError(`Message must be at least ${MIN_MESSAGE_LENGTH} characters long (currently ${formData.message.trim().length} characters)`);
+      return false;
+    }
+    
+    setMessageError("");
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate message before submitting
+    if (!validateMessage()) {
+      return;
+    }
+    
     setIsSubmitting(true);
     setStatus("idle");
+    setErrorMessage("");
 
     try {
       // Use your own backend API
@@ -66,6 +103,7 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
           inquiryType: "General Inquiry",
           message: "",
         });
+        setMessageError("");
         if (onSuccess) {
           setTimeout(() => {
             onSuccess();
@@ -73,9 +111,11 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
         }
       } else {
         setStatus("error");
+        setErrorMessage(result.message || "Failed to send message. Please try again.");
       }
     } catch (error) {
       setStatus("error");
+      setErrorMessage("Network error. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -124,18 +164,39 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-2 text-foreground">
-          Message
-        </label>
+        <div className="flex justify-between items-center mb-2">
+          <label className="block text-sm font-medium text-foreground">
+            Message
+          </label>
+          <span className={`text-xs ${
+            formData.message.trim().length < MIN_MESSAGE_LENGTH 
+              ? 'text-muted-foreground' 
+              : 'text-green-600 dark:text-green-400'
+          }`}>
+            {formData.message.trim().length}/{MIN_MESSAGE_LENGTH} characters
+          </span>
+        </div>
         <textarea
           name="message"
           value={formData.message}
           onChange={handleChange}
           required
           rows={isModal ? 4 : 6}
-          placeholder="Tell us about your inquiry..."
-          className="w-full px-4 py-2.5 bg-background border border-input rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
+          placeholder="Tell us about your inquiry... (minimum 10 characters)"
+          className={`w-full px-4 py-2.5 bg-background border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none ${
+            messageError 
+              ? 'border-red-500 focus:ring-red-500' 
+              : 'border-input focus:ring-primary'
+          }`}
         />
+        {messageError && (
+          <p className="mt-1.5 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {messageError}
+          </p>
+        )}
       </div>
 
       {status === "success" && (
@@ -146,8 +207,14 @@ export function ContactForm({ isModal = false, onSuccess }: ContactFormProps) {
       )}
 
       {status === "error" && (
-        <div className="p-4 bg-red-500/10 border border-red-500 rounded-lg text-red-600 dark:text-red-400">
-          Oops! Something went wrong. Please try again or contact us directly.
+        <div className="p-4 bg-red-500/10 border border-red-500 rounded-lg text-red-600 dark:text-red-400 flex items-start gap-2">
+          <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+          </svg>
+          <div>
+            <p className="font-medium">Oops! Something went wrong</p>
+            <p className="text-sm mt-1">{errorMessage || "Please try again or contact us directly."}</p>
+          </div>
         </div>
       )}
 
